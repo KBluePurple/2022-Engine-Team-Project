@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
         _trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    void Update()
+    private void Update()
     {
         var mainCamera = GameManager.Instance.mainCamera;
         var position = transform.position;
@@ -39,18 +39,13 @@ public class PlayerController : MonoBehaviour
     private void Move(Component mainCamera)
     {
         var rotationY = mainCamera.transform.rotation.eulerAngles.y;
-
-        var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         var inputRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-
-        var direction = Quaternion.Euler(0, rotationY, 0) * input;
         var directionRaw = Quaternion.Euler(0, rotationY, 0) * inputRaw;
 
         if (directionRaw.magnitude <= speed)
             _rigidbody.velocity = directionRaw * speed;
 
-
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && directionRaw.magnitude != 0)
         {
             StartCoroutine(Dash(directionRaw));
         }
@@ -59,17 +54,17 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Dash(Vector3 directionRaw)
     {
         _trailRenderer.emitting = true;
-        
+
         Vector3 targetPosition;
-        
+
         if (Physics.Raycast(transform.position, directionRaw, out var hit, dashSpeed))
             targetPosition = hit.point - directionRaw * 0.8f;
         else
             targetPosition = transform.position + directionRaw * dashSpeed;
-        
+
         transform.DOMove(targetPosition, 0.1f).SetEase(Ease.Linear);
         yield return new WaitForSeconds(0.1f);
-        
+
         _trailRenderer.emitting = false;
     }
 }
