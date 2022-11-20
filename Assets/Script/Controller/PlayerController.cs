@@ -9,27 +9,27 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 10;
     private Rigidbody _rigidbody;
     private TrailRenderer _trailRenderer;
-    
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _trailRenderer = GetComponent<TrailRenderer>();
     }
-    
+
     void Update()
     {
         var mainCamera = GameManager.Instance.mainCamera;
-        
+        var position = transform.position;
+
         Move(mainCamera);
-        Rotate(mainCamera);
+        Rotate(mainCamera, position);
     }
 
-    private void Rotate(Camera mainCamera)
+    private void Rotate(Camera mainCamera, Vector3 position)
     {
         var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out var hit, 100)) return;
-        
-        var position = transform.position;
+
         var targetPosition = hit.point;
         targetPosition.y = position.y;
         var lookRotation = Quaternion.LookRotation(targetPosition - position);
@@ -42,12 +42,12 @@ public class PlayerController : MonoBehaviour
 
         var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         var inputRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        
+
         var direction = Quaternion.Euler(0, rotationY, 0) * input;
         var directionRaw = Quaternion.Euler(0, rotationY, 0) * inputRaw;
 
-        if (direction.magnitude <= speed)
-            _rigidbody.velocity = direction * speed;
+        if (directionRaw.magnitude <= speed)
+            _rigidbody.velocity = directionRaw * speed;
 
 
         if (Input.GetMouseButtonDown(1))
@@ -59,18 +59,17 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Dash(Vector3 directionRaw)
     {
         _trailRenderer.emitting = true;
-        yield return new WaitForSeconds(0.1f);
-        GameManager.Instance.virtualCameraController.FOV = 100;
-        GameManager.Instance.virtualCameraController.DOFieldOfView(65, 0.5f);
+        
+        Vector3 targetPosition;
+        
         if (Physics.Raycast(transform.position, directionRaw, out var hit, dashSpeed))
-        {
-            transform.position = hit.point;
-        }
+            targetPosition = hit.point - directionRaw * 0.8f;
         else
-        {
-            transform.position += directionRaw * dashSpeed;
-        }
+            targetPosition = transform.position + directionRaw * dashSpeed;
+        
+        transform.DOMove(targetPosition, 0.1f).SetEase(Ease.Linear);
         yield return new WaitForSeconds(0.1f);
+        
         _trailRenderer.emitting = false;
     }
 }
