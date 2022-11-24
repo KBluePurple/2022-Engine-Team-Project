@@ -1,9 +1,10 @@
-﻿using UnityEngine;
-
-public class Player : Entity, IDamageable
+﻿public class Player : LivingEntity
 {
-    public void TakeDamage(int damage)
+    public Player(EntityType type) : base(type)
     {
-        
+    }
+    
+    public override void HitFeedback(Attack attack)
+    {
     }
 }

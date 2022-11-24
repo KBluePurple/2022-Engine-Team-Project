@@ -1,31 +1,46 @@
-using Unity.VisualScripting;
+﻿using AchromaticDev.Util.Pooling;
 using UnityEngine;
+using UnityEngine.Events;
 
-public record Attack(int Damage);
-
-[RequireComponent(typeof(MeshRenderer))]
-public abstract class Entity : MonoBehaviour, IHitFeedback
+[RequireComponent(typeof(PoolObject))]
+public abstract class Entity : MonoBehaviour
 {
-    public int Health { get; private set; }
-    public int MaxHealth { get; private set; }
-    public bool IsDead { get; private set; }
+    public EntityType Type { get; init; }
+    public string Id { get; private set; }
+
+    private PoolObject _poolObject;
+    private bool _isInitialized;
     
-    private MeshRenderer _meshRenderer;
-
-    public void TakeAttack(Attack attack)
+    protected Entity(EntityType type)
     {
-        if (this is IDamageable damageable)
+        Type = type;
+    }
+    
+    public void Initialize(string id)
+    {
+        if (_isInitialized)
         {
-            damageable.TakeDamage(attack.Damage);
+            Debug.LogError("Entity is already initialized");
+            return;
         }
 
-        if (this is IHitFeedback hitFeedback)
-        {
-            hitFeedback.HitFeedback(attack);
-        }
+        Id = id;
+        _isInitialized = true;
+    }
+    
+    private void Awake()
+    {
+        _poolObject = GetComponent<PoolObject>();
+        _poolObject.onSpawn.AddListener(OnSpawn);
+        _poolObject.onDespawn.AddListener(OnDespawn);
     }
 
-    public virtual void HitFeedback(Attack attack)
+    protected virtual void OnSpawn()
+    {
+        
+    }
+
+    protected virtual void OnDespawn()
     {
         
     }

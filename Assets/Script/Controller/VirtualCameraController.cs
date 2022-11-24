@@ -30,10 +30,10 @@ public class VirtualCameraController : MonoBehaviour
     public TweenerCore<float, float, FloatOptions> DOFieldOfView(float endValue, float duration)
     {
         return DOTween.To(() => FOV, x => FOV = x, endValue, duration);
-    }    
-    
+    }
+
     private Vector3 _lastPosition = Vector3.zero;
-    
+
     private void FovCalc()
     {
         var position = transform.position;

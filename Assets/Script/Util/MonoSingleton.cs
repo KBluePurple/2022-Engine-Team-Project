@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +7,7 @@ namespace Script.Util
     [SuppressMessage("ReSharper", "StaticMemberInGenericType")]
     public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
+        public static bool IsInitialized => _instance != null;
         private static T _instance;
         private static readonly object Lock = new();
         private static bool _applicationIsQuitting;
@@ -73,8 +74,11 @@ namespace Script.Util
         {
             _isDontDestroyOnLoad =
                 typeof(T).GetCustomAttributes(typeof(DontDestroyOnLoadAttribute), true).Length > 0;
-            DontDestroyOnLoad(this);
-            SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+            if (_isDontDestroyOnLoad)
+                DontDestroyOnLoad(this);
+            else
+                SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
         public virtual void OnDestroy()
