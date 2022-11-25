@@ -19,12 +19,12 @@ namespace Script.Manager
 
         private void InitEntity()
         {
-            var sceneEntities = FindObjectsOfType<MonoBehaviour>().OfType<Entity>().ToArray();
+            var sceneEntities = FindObjectsOfType<Entity>();
             foreach (var entity in sceneEntities)
             {
                 entity.Initialize(Guid.NewGuid().ToString());
             }
-            entities.AddRange(entities);
+            entities.AddRange(sceneEntities);
         }
         
         public void SpawnEntity(EntityType entityType, Vector3 position)
