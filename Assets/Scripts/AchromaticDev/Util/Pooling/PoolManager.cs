@@ -5,8 +5,8 @@ namespace AchromaticDev.Util.Pooling
 {
     public class PoolManager : MonoSingleton<PoolManager>
     {
-        internal readonly Dictionary<GameObject, Pool> PrefabDict = new Dictionary<GameObject, Pool>();
-        internal readonly Dictionary<GameObject, PoolObject> PoolObjectCache = new Dictionary<GameObject, PoolObject>();
+        internal readonly Dictionary<GameObject, Pool> PrefabDict = new();
+        internal readonly Dictionary<GameObject, PoolObject> PoolObjectCache = new();
 
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
@@ -33,7 +33,7 @@ namespace AchromaticDev.Util.Pooling
                 return _instance.PrefabDict[prefab].GetObject(prefab, position, rotation, parent);
 
             Debug.Log("PoolManager: No pool found for " + prefab.name);
-            
+
             _instance.PrefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
             _instance.PrefabDict[prefab].prefab = prefab;
             _instance.PrefabDict[prefab].Initialize(_instance.transform);
@@ -48,17 +48,22 @@ namespace AchromaticDev.Util.Pooling
 
         public static void Destroy(GameObject gameObject)
         {
-            var prefab = _instance.PoolObjectCache[gameObject].pool.prefab;
-
-            if (_instance.PrefabDict.ContainsKey(prefab))
+            if (_instance.PoolObjectCache.ContainsKey(gameObject))
             {
-                _instance.PrefabDict[prefab].ReturnObject(gameObject);
+                var prefab = _instance.PoolObjectCache[gameObject].pool.prefab;
+
+                if (_instance.PrefabDict.ContainsKey(prefab))
+                {
+                    _instance.PrefabDict[prefab].ReturnObject(gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning($"PoolManager: {prefab.name} is not in the pool dictionary.");
+                    Object.Destroy(gameObject);
+                }
             }
             else
-            {
-                Debug.LogWarning($"PoolManager: {prefab.name} is not in the pool dictionary.");
                 Object.Destroy(gameObject);
-            }
         }
     }
 }
