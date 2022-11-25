@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -24,14 +21,14 @@ public class InGameUI : MonoBehaviour
         _root = _uiDocument.rootVisualElement;
 
         var bossInfo = _root.Q<VisualElement>("boss-info");
-        _bossName = bossInfo.Q<TextElement>(".name");
-        _bossHealthBar = bossInfo.Q<VisualElement>(".health-bar");
-        _bossHealthBarFill = _bossHealthBar.Q<VisualElement>(".fill");
+        _bossName = bossInfo.Q<TextElement>(null, "name");
+        _bossHealthBar = bossInfo.Q<VisualElement>(null, "health-bar");
+        _bossHealthBarFill = _bossHealthBar.Q<VisualElement>(null, "fill");
 
         var playerInfo = _root.Q<VisualElement>("player-info");
-        _playerName = playerInfo.Q<TextElement>(".name");
-        _playerHealthBar = playerInfo.Q<VisualElement>(".health-bar");
-        _playerHealthBarFill = _playerHealthBar.Q<VisualElement>(".fill");
+        _playerName = playerInfo.Q<TextElement>(null, "name");
+        _playerHealthBar = playerInfo.Q<VisualElement>(null, "health-bar");
+        _playerHealthBarFill = _playerHealthBar.Q<VisualElement>(null, "fill");
         _playerProfilePicture = _root.Q<VisualElement>("profile-picture");
     }
 
