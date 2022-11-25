@@ -6,15 +6,13 @@ public class Player : LivingEntity
     private Color _originalColor;
     private static readonly int EmissionColorCache = Shader.PropertyToID("_EmissionColor");
 
-    private Tween _hitFeedbackTween;
-
     private Color EmissionColor
     {
         get => meshRenderer.sharedMaterial.GetColor(EmissionColorCache);
         set
         {
             meshRenderer.sharedMaterial.SetColor(EmissionColorCache, value);
-            meshRenderer.sharedMaterial.EnableKeyword("_EMISSION");
+            meshRenderer.sharedMaterial.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
         }
     }
 
@@ -31,6 +29,8 @@ public class Player : LivingEntity
             Damage(new Attack(0, this));
         }
     }
+
+    private Tween _hitFeedbackTween;
 
     public override void HitFeedback(Attack attack)
     {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,17 +9,17 @@ namespace AchromaticDev.Util.Pooling
     {
         public GameObject prefab = null;
         public int initialPoolSize = 0;
-        
+
         private readonly Queue<PoolObject> _pool = new Queue<PoolObject>();
         private GameObject _poolParent = null;
-        
+
         public int PoolSize => _pool.Count;
-        
+
         public void Initialize(Transform parent)
         {
             _poolParent = new GameObject(prefab.name + " Pool");
             _poolParent.transform.parent = parent;
-            
+
             for (int i = 0; i < initialPoolSize; i++)
             {
                 GameObject obj = Instantiate(prefab, _poolParent.transform);
@@ -32,11 +31,11 @@ namespace AchromaticDev.Util.Pooling
 
             SceneManager.sceneUnloaded += SceneUnloaded;
         }
-        
-        public GameObject GetObject(GameObject poolPrefab, Vector3 position, Quaternion rotation, Transform parent = null)
+
+        public GameObject GetObject(GameObject poolPrefab, Vector3 position, Quaternion rotation,
+            Transform parent = null)
         {
             GameObject obj;
-            Debug.Log(_pool.Count);
             if (_pool.Count > 0)
             {
                 obj = _pool.Dequeue().gameObject;
@@ -46,41 +45,44 @@ namespace AchromaticDev.Util.Pooling
                 obj = Instantiate(poolPrefab, position, rotation, parent);
                 obj.name = $"PoolObject ({poolPrefab.name})";
                 var poolObject = obj.GetComponent<PoolObject>();
-                
+
                 if (poolObject == null)
                     poolObject = obj.AddComponent<PoolObject>();
-                
-                PoolManager.Instance.PoolObjectCache[obj] = poolObject;
+
+                PoolManager.Instance.poolObjectCache[obj] = poolObject;
                 poolObject.pool = this;
             }
+
             obj.SetActive(true);
-            PoolManager.Instance.PoolObjectCache[obj].onSpawn?.Invoke();
-            
+            PoolManager.Instance.poolObjectCache[obj].onSpawn?.Invoke();
+
             return obj;
         }
-        
+
         public void ReturnObject(GameObject obj)
         {
             obj.SetActive(false);
-            if (PoolManager.Instance.PoolObjectCache.TryGetValue(obj, out var poolObject))
+            if (PoolManager.Instance.poolObjectCache.TryGetValue(obj, out var poolObject))
             {
                 if (_pool.Contains(poolObject))
                 {
                     Debug.Log("Already in pool");
                     return;
                 }
+
                 _pool.Enqueue(poolObject);
                 poolObject.onDespawn?.Invoke();
             }
         }
-        
+
         private void SceneUnloaded(Scene scene)
         {
             foreach (var poolObject in _pool)
             {
-                PoolManager.Instance.PoolObjectCache.Remove(poolObject.gameObject);
+                PoolManager.Instance.poolObjectCache.Remove(poolObject.gameObject);
                 Destroy(poolObject.gameObject);
             }
+
             _pool.Clear();
         }
     }

@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace AchromaticDev.Util.Pooling
 {
@@ -8,17 +7,17 @@ namespace AchromaticDev.Util.Pooling
     public class PoolManagerEditor : Editor
     {
         SerializedProperty _poolList;
-        
+
         public override void OnInspectorGUI()
         {
             PoolManager poolManager = (PoolManager)target;
             serializedObject.Update();
-            
+
             EditorGUILayout.LabelField("Pool List", EditorStyles.boldLabel);
 
             if (poolManager is not null)
             {
-                foreach (var pool in poolManager.PrefabDict)
+                foreach (var pool in poolManager.prefabDict)
                 {
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(pool.Key.name);
