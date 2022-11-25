@@ -9,17 +9,22 @@ namespace Script.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>
     {
-        private readonly List<Entity> _entities = new();
-        public IReadOnlyList<Entity> Entities => _entities;
+        [SerializeField] private List<Entity> entities = new();
+        public IReadOnlyList<Entity> Entities => entities;
 
-        public void InitEntity()
+        public override void Awake()
         {
-            var entities = FindObjectsOfType<MonoBehaviour>().OfType<Entity>();
-            foreach (var entity in _entities)
+            InitEntity();
+        }
+
+        private void InitEntity()
+        {
+            var sceneEntities = FindObjectsOfType<MonoBehaviour>().OfType<Entity>().ToArray();
+            foreach (var entity in sceneEntities)
             {
                 entity.Initialize(Guid.NewGuid().ToString());
             }
-            _entities.AddRange(entities);
+            entities.AddRange(entities);
         }
         
         public void SpawnEntity(EntityType entityType, Vector3 position)
@@ -32,18 +37,18 @@ namespace Script.Manager
                 return;
             }
             entityComponent.Initialize(Guid.NewGuid().ToString());
-            _entities.Add(entityComponent);
+            entities.Add(entityComponent);
         }
         
         public void DestroyEntity(Entity entity)
         {
-            _entities.Remove(entity);
+            entities.Remove(entity);
             PoolManager.Destroy(entity.gameObject);
         }
         
         public Entity GetEntity(string id)
         {
-            return _entities.FirstOrDefault(entity => entity.Id == id);
+            return entities.FirstOrDefault(entity => entity.Id == id);
         }
     }
 }
