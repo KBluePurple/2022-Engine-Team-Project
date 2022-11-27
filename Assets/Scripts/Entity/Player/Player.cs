@@ -26,7 +26,7 @@ public class Player : LivingEntity
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Damage(new Attack(0, this));
+            Damage(new Attack(1, this));
         }
     }
 
