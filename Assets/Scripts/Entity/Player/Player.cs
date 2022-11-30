@@ -1,25 +1,29 @@
-﻿using DG.Tweening;
+﻿using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public class Player : LivingEntity
 {
-    private Color _originalColor;
+    private Color[] _originalColors;
     private static readonly int EmissionColorCache = Shader.PropertyToID("_EmissionColor");
 
-    private Color EmissionColor
+    private Color[] EmissionColors
     {
-        get => meshRenderer.sharedMaterial.GetColor(EmissionColorCache);
+        get => meshRenderers.Select(x => x.sharedMaterial.GetColor(EmissionColorCache)).ToArray();
         set
         {
-            meshRenderer.sharedMaterial.SetColor(EmissionColorCache, value);
-            meshRenderer.sharedMaterial.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
+            for (var i = 0; i < meshRenderers.Length; i++)
+            {
+                meshRenderers[i].sharedMaterial.SetColor(EmissionColorCache, value[i]);
+                meshRenderers[i].sharedMaterial.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
+            }
         }
     }
 
     protected override void Awake()
     {
         base.Awake();
-        _originalColor = EmissionColor;
+        _originalColors = EmissionColors;
     }
 
     private void Update()
@@ -34,10 +38,11 @@ public class Player : LivingEntity
 
     public override void HitFeedback(Attack attack)
     {
-        EmissionColor = new Color(4, 4, 4);
+        EmissionColors = _originalColors.Select(_ => new Color(4, 4, 4)).ToArray();
 
         _hitFeedbackTween?.Kill();
-        _hitFeedbackTween = DOTween.To(() => EmissionColor, x => EmissionColor = x, _originalColor, 0.5f);
+        _hitFeedbackTween = DOTween.To(() => EmissionColors[0],
+            x => EmissionColors = _originalColors.Select(_ => x).ToArray(), _originalColors[0], 0.5f);
     }
 
     public Player() : base(EntityType.Player)

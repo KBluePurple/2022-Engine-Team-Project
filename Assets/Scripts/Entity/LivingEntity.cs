@@ -1,21 +1,25 @@
 using Script.Manager;
 using UnityEngine;
+using UnityEngine.Events;
 
 public record Attack(int Damage, Entity Attacker);
 
-[RequireComponent(typeof(MeshRenderer))]
 public abstract class LivingEntity : Entity, IHitFeedback
 {
-    [field: SerializeField] public int Health { get; private set; }
-    [field: SerializeField] public int MaxHealth { get; private set; }
+    public UnityEvent OnDeath;
+    public UnityEvent OnHit;
+
     public bool IsDead { get; private set; }
 
+    [field: SerializeField] public int Health { get; private set; } = 100;
+    [field: SerializeField] public int MaxHealth { get; private set; } = 100;
+
     // ReSharper disable once InconsistentNaming
-    protected MeshRenderer meshRenderer;
+    protected MeshRenderer[] meshRenderers;
 
     protected virtual void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderers = GetComponentsInChildren<MeshRenderer>();
     }
 
     public abstract void HitFeedback(Attack attack);
@@ -24,14 +28,14 @@ public abstract class LivingEntity : Entity, IHitFeedback
     {
         if (IsDead) return;
 
-        attack = OnDamage(attack);
+        attack = OnDamageHandle(attack);
 
         Health -= attack.Damage;
         if (Health <= 0)
         {
             Health = 0;
             IsDead = true;
-            OnDeath(attack);
+            OnDeathHandle(attack);
         }
         else
         {
@@ -39,12 +43,12 @@ public abstract class LivingEntity : Entity, IHitFeedback
         }
     }
 
-    protected virtual Attack OnDamage(Attack attack)
+    protected virtual Attack OnDamageHandle(Attack attack)
     {
         return attack;
     }
 
-    protected virtual void OnDeath(Attack attack)
+    protected virtual void OnDeathHandle(Attack attack)
     {
         EntityManager.Instance.DestroyEntity(this);
     }
