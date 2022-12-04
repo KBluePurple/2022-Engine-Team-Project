@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using MoreMountains.Feedbacks;
+using MoreMountains.Feedbacks;
 
 public class FeelTest : MonoBehaviour
 {
-    /*
+    
     public MMFeedbacks jumpFeedBack;
     public MMFeedbacks landFeedBack;
 
@@ -37,5 +37,5 @@ public class FeelTest : MonoBehaviour
 
         lastVelocity = rb.velocity.y;
     }
-    */
+    
 }
