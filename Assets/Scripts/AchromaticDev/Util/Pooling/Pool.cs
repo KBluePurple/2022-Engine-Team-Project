@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 namespace AchromaticDev.Util.Pooling
 {
     [UnityEngine.CreateAssetMenu(fileName = "New Pool Settings", menuName = "AchromaticDev/Pooling", order = 0)]
@@ -39,6 +38,9 @@ namespace AchromaticDev.Util.Pooling
             if (_pool.Count > 0)
             {
                 obj = _pool.Dequeue().gameObject;
+                obj.transform.position = position;
+                obj.transform.rotation = rotation;
+                obj.transform.parent = parent;
             }
             else
             {

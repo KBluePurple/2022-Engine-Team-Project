@@ -1,14 +1,16 @@
 ﻿using AchromaticDev.Util.Pooling;
 using UnityEngine;
+using UnityEngine.Serialization;
 public class PlayerAttackController : MonoBehaviour
 {
-    public AttackSO AttackSO
+    public AttackSO AttackSo
     {
-        get => attackSO;
-        set => attackSO = value;
+        get => attackSo;
+        set => attackSo = value;
     }
 
-    [SerializeField] private AttackSO attackSO;
+    [FormerlySerializedAs("attackSO")]
+    [SerializeField] private AttackSO attackSo;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Transform bulletParent;
 
@@ -16,12 +18,11 @@ public class PlayerAttackController : MonoBehaviour
 
     public void Attack()
     {
-        if (_timer <= 0)
-        {
-            GameObject bullet = PoolManager.Instantiate(attackSO.prefab, attackPoint.position, attackPoint.rotation);
-            bullet.transform.SetParent(bulletParent);
-            _timer = attackSO.cooldown;
-        }
+        if (!(_timer <= 0)) return;
+
+        GameObject bullet = PoolManager.Instantiate(attackSo.prefab, attackPoint.position, attackPoint.rotation);
+        bullet.transform.SetParent(bulletParent);
+        _timer = attackSo.cooldown;
     }
 
     private void Update()

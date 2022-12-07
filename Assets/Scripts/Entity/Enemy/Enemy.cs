@@ -41,7 +41,7 @@ public class Enemy : LivingEntity
 
         _hitFeedbackTween?.Kill();
         _hitFeedbackTween = DOTween.To(() => EmissionColors[0],
-            x => EmissionColors = _originalColors.Select(_ => x).ToArray(), _originalColors[0], 0.5f);
+            x => EmissionColors = _originalColors.Select(_ => x).ToArray(), _originalColors[0], 0.2f);
     }
 
     public Enemy() : base(EntityType.Enemy)

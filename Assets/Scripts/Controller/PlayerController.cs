@@ -34,7 +34,11 @@ public class PlayerController : MonoBehaviour
 
         Move();
         Rotate();
-        _playerAttackController.Attack();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _playerAttackController.Attack();
+        }
 
         void Rotate()
         {
