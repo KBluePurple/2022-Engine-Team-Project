@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using AchromaticDev.Util.Pooling;
 using UnityEngine;
-
 public class SpawnPoint<T> : MonoBehaviour where T : Entity
 {
     [SerializeField] private bool isSpawned;
@@ -22,7 +21,7 @@ public class SpawnPoint<T> : MonoBehaviour where T : Entity
     private IEnumerator SpawnCoroutine()
     {
         yield return new WaitForSeconds(spawnDelay);
-        var enemy = PoolManager.Instantiate(entityPrefab, transform.position, Quaternion.identity);
+        GameObject enemy = PoolManager.Instantiate(entityPrefab, transform.position, Quaternion.identity);
         enemy.GetComponent<LivingEntity>().OnDeath.AddListener(() => _sector.EnemyCount--);
     }
 }

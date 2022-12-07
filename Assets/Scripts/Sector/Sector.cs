@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 public class Sector : MonoBehaviour
 {
     [SerializeField] private List<Sector> nextSectors = new();
@@ -29,7 +28,7 @@ public class Sector : MonoBehaviour
     private void Open()
     {
         _isActivated = true;
-        foreach (var door in doors)
+        foreach (SectorDoor door in doors)
         {
             door.Open();
         }
@@ -44,7 +43,7 @@ public class Sector : MonoBehaviour
     {
         if (!_isActivated || !IsCleared) return;
 
-        foreach (var enemiesSpawnPoint in enemiesSpawnPoints)
+        foreach (SpawnPoint<Enemy> enemiesSpawnPoint in enemiesSpawnPoints)
         {
             enemiesSpawnPoint.Spawn(this);
         }

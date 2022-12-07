@@ -2,7 +2,6 @@ using System.Collections;
 using DG.Tweening;
 using Script.Manager;
 using UnityEngine;
-
 [RequireComponent(typeof(PlayerAttackController))]
 [RequireComponent(typeof(TrailRenderer))]
 [RequireComponent(typeof(Rigidbody))]
@@ -30,8 +29,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        var mainCamera = GameManager.Instance.mainCamera;
-        var position = transform.position;
+        Camera mainCamera = GameManager.Instance.mainCamera;
+        Vector3 position = transform.position;
 
         Move();
         Rotate();
@@ -39,21 +38,21 @@ public class PlayerController : MonoBehaviour
 
         void Rotate()
         {
-            var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out var hit, 100, groundLayer)) return;
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out RaycastHit hit, 100, groundLayer)) return;
 
-            var targetPosition = hit.point;
+            Vector3 targetPosition = hit.point;
             targetPosition.y = position.y;
-            var lookRotation = Quaternion.LookRotation(targetPosition - position);
+            Quaternion lookRotation = Quaternion.LookRotation(targetPosition - position);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 10 * Time.deltaTime);
             Debug.DrawLine(mainCamera.transform.position, hit.point, Color.red);
         }
 
         void Move()
         {
-            var rotationY = mainCamera.transform.rotation.eulerAngles.y;
-            var inputRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-            var directionRaw = Quaternion.Euler(0, rotationY, 0) * inputRaw;
+            float rotationY = mainCamera.transform.rotation.eulerAngles.y;
+            Vector3 inputRaw = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+            Vector3 directionRaw = Quaternion.Euler(0, rotationY, 0) * inputRaw;
 
             if (directionRaw.magnitude <= speed)
                 _rigidbody.velocity = directionRaw * speed;
@@ -71,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetPosition;
 
-        if (Physics.Raycast(transform.position, directionRaw, out var hit, dashSpeed))
+        if (Physics.Raycast(transform.position, directionRaw, out RaycastHit hit, dashSpeed))
             targetPosition = hit.point - directionRaw * 0.8f;
         else
             targetPosition = transform.position + directionRaw * dashSpeed;

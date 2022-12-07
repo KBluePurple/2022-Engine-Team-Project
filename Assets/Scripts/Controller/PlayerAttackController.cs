@@ -1,7 +1,5 @@
-﻿using System;
-using AchromaticDev.Util.Pooling;
+﻿using AchromaticDev.Util.Pooling;
 using UnityEngine;
-
 public class PlayerAttackController : MonoBehaviour
 {
     public AttackSO AttackSO
@@ -15,12 +13,12 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private Transform bulletParent;
 
     private float _timer;
-    
+
     public void Attack()
     {
         if (_timer <= 0)
         {
-            var bullet = PoolManager.Instantiate(attackSO.prefab, attackPoint.position, attackPoint.rotation);
+            GameObject bullet = PoolManager.Instantiate(attackSO.prefab, attackPoint.position, attackPoint.rotation);
             bullet.transform.SetParent(bulletParent);
             _timer = attackSO.cooldown;
         }

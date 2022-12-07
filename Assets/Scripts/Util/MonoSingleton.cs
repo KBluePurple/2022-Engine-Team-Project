@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 namespace Script.Util
 {
     [SuppressMessage("ReSharper", "StaticMemberInGenericType")]
@@ -38,7 +37,7 @@ namespace Script.Util
 
                     if (_instance == null)
                     {
-                        var singleton = new GameObject();
+                        GameObject singleton = new GameObject();
                         _instance = singleton.AddComponent<T>();
                         singleton.name = "(singleton) " + typeof(T);
 

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-
 public class Player : LivingEntity
 {
     private Color[] _originalColors;
@@ -12,7 +11,7 @@ public class Player : LivingEntity
         get => meshRenderers.Select(x => x.material.GetColor(EmissionColorCache)).ToArray();
         set
         {
-            for (var i = 0; i < meshRenderers.Length; i++)
+            for (int i = 0; i < meshRenderers.Length; i++)
             {
                 meshRenderers[i].material.SetColor(EmissionColorCache, value[i]);
                 meshRenderers[i].material.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨

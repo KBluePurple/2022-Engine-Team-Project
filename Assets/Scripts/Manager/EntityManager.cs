@@ -4,7 +4,6 @@ using System.Linq;
 using AchromaticDev.Util.Pooling;
 using Script.Util;
 using UnityEngine;
-
 namespace Script.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>
@@ -19,8 +18,8 @@ namespace Script.Manager
 
         private void InitEntity()
         {
-            var sceneEntities = FindObjectsOfType<Entity>();
-            foreach (var entity in sceneEntities)
+            Entity[] sceneEntities = FindObjectsOfType<Entity>();
+            foreach (Entity entity in sceneEntities)
             {
                 entity.Initialize(Guid.NewGuid().ToString());
             }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public static class ComponentManager
 {
     private static readonly Dictionary<GameObject, Component> Components = new();
@@ -13,7 +12,7 @@ public static class ComponentManager
 
     public static T GetCachedComponent<T>(this GameObject gameObject) where T : Component
     {
-        if (Components.TryGetValue(gameObject, out var component))
+        if (Components.TryGetValue(gameObject, out Component component))
             return (T)component;
 
         component = gameObject.GetComponent<T>();

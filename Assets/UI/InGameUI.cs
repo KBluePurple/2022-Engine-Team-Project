@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-
 public class InGameUI : MonoBehaviour
 {
     private UIDocument _uiDocument;
@@ -20,12 +19,12 @@ public class InGameUI : MonoBehaviour
         _uiDocument = GetComponent<UIDocument>();
         _root = _uiDocument.rootVisualElement;
 
-        var bossInfo = _root.Q<VisualElement>("boss-info");
+        VisualElement bossInfo = _root.Q<VisualElement>("boss-info");
         _bossName = bossInfo.Q<TextElement>(null, "name");
         _bossHealthBar = bossInfo.Q<VisualElement>(null, "health-bar");
         _bossHealthBarFill = _bossHealthBar.Q<VisualElement>(null, "fill");
 
-        var playerInfo = _root.Q<VisualElement>("player-info");
+        VisualElement playerInfo = _root.Q<VisualElement>("player-info");
         _playerName = playerInfo.Q<TextElement>(null, "name");
         _playerHealthBar = playerInfo.Q<VisualElement>(null, "health-bar");
         _playerHealthBarFill = _playerHealthBar.Q<VisualElement>(null, "fill");

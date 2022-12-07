@@ -1,7 +1,6 @@
 ﻿using AchromaticDev.Util;
 using AchromaticDev.Util.Pooling;
 using UnityEngine;
-
 namespace Script.Manager
 {
     public class SoundManager : MonoSingleton<SoundManager>
@@ -13,10 +12,10 @@ namespace Script.Manager
         {
             position = position == default ? transform.position : position;
 
-            var sound = PoolManager.Instantiate(soundPrefab, position, Quaternion.identity);
+            GameObject sound = PoolManager.Instantiate(soundPrefab, position, Quaternion.identity);
             sound.transform.SetParent(transform);
 
-            var cachedComponent = sound.GetCachedComponent<AudioSource>();
+            AudioSource cachedComponent = sound.GetCachedComponent<AudioSource>();
             cachedComponent.clip = clip;
             cachedComponent.Play();
 
