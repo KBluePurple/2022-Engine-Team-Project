@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 5;
     public float dashSpeed = 10;
     public GameObject dashEffect;
+    [SerializeField] private LayerMask groundLayer;
 
     #endregion SerializeField
 
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
         _trailRenderer = GetComponent<TrailRenderer>();
+        _playerAttackController = GetComponent<PlayerAttackController>();
     }
 
     private void Update()
@@ -38,12 +40,13 @@ public class PlayerController : MonoBehaviour
         void Rotate()
         {
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out var hit, 100)) return;
+            if (!Physics.Raycast(ray, out var hit, 100, groundLayer)) return;
 
             var targetPosition = hit.point;
             targetPosition.y = position.y;
             var lookRotation = Quaternion.LookRotation(targetPosition - position);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 10 * Time.deltaTime);
+            Debug.DrawLine(mainCamera.transform.position, hit.point, Color.red);
         }
 
         void Move()
@@ -77,12 +80,5 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         _trailRenderer.emitting = false;
-    }
-}
-
-public class PlayerAttackController : MonoBehaviour
-{
-    public void Attack()
-    {
     }
 }

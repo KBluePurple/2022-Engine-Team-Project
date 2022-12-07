@@ -24,7 +24,7 @@ public abstract class LivingEntity : Entity, IHitFeedback
 
     public abstract void HitFeedback(Attack attack);
 
-    public void Damage(Attack attack)
+    public void TakeDamage(Attack attack)
     {
         if (IsDead) return;
 

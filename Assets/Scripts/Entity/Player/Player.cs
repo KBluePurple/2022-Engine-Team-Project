@@ -9,13 +9,13 @@ public class Player : LivingEntity
 
     private Color[] EmissionColors
     {
-        get => meshRenderers.Select(x => x.sharedMaterial.GetColor(EmissionColorCache)).ToArray();
+        get => meshRenderers.Select(x => x.material.GetColor(EmissionColorCache)).ToArray();
         set
         {
             for (var i = 0; i < meshRenderers.Length; i++)
             {
-                meshRenderers[i].sharedMaterial.SetColor(EmissionColorCache, value[i]);
-                meshRenderers[i].sharedMaterial.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
+                meshRenderers[i].material.SetColor(EmissionColorCache, value[i]);
+                meshRenderers[i].material.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
             }
         }
     }
@@ -30,7 +30,7 @@ public class Player : LivingEntity
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Damage(new Attack(1, this));
+            TakeDamage(new Attack(1, this));
         }
     }
 
