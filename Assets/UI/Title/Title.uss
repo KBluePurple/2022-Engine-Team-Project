@@ -1,0 +1,29 @@
+.unity-button {
+    width: 400px;
+    font-size: 40px;
+    transition-property: all;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0s;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: rgba(70, 82, 84, 255);
+    color: rgba(217, 217, 217, 255);
+}
+
+.unity-button:hover {
+    width: 400px;
+    font-size: 40px;
+    background-color: rgba(66, 73, 75, 255);
+}
+
+.unity-button:hover:active:focus {
+    width: 400px;
+    font-size: 40px;
+    background-color: rgba(49, 57, 58, 255);
+}
