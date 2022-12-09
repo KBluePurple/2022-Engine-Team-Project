@@ -2,6 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using Script.Manager;
 using UnityEngine;
+
 [RequireComponent(typeof(PlayerAttackController))]
 [RequireComponent(typeof(TrailRenderer))]
 [RequireComponent(typeof(Rigidbody))]
@@ -38,6 +39,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _playerAttackController.Attack();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            _playerAttackController.HeavyAttack();
         }
 
         void Rotate()

@@ -15,11 +15,11 @@ public abstract class LivingEntity : Entity, IHitFeedback
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
 
     // ReSharper disable once InconsistentNaming
-    protected MeshRenderer[] meshRenderers;
+    protected Renderer[] renderers;
 
     protected virtual void Awake()
     {
-        meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        renderers = GetComponentsInChildren<Renderer>();
     }
 
     public abstract void HitFeedback(Attack attack);

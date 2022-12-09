@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AchromaticDev.Util;
 using AchromaticDev.Util.Pooling;
-using Script.Util;
 using UnityEngine;
+
 namespace Script.Manager
 {
     public class EntityManager : MonoSingleton<EntityManager>

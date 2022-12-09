@@ -1,20 +1,23 @@
 ﻿using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+
+[RequireComponent(typeof(PlayerAttackController))]
 public class Player : LivingEntity
 {
     private Color[] _originalColors;
     private static readonly int EmissionColorCache = Shader.PropertyToID("_EmissionColor");
+    private PlayerAttackController _playerAttackController;
 
     private Color[] EmissionColors
     {
-        get => meshRenderers.Select(x => x.material.GetColor(EmissionColorCache)).ToArray();
+        get => renderers.Select(x => x.material.GetColor(EmissionColorCache)).ToArray();
         set
         {
-            for (int i = 0; i < meshRenderers.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
-                meshRenderers[i].material.SetColor(EmissionColorCache, value[i]);
-                meshRenderers[i].material.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
+                renderers[i].material.SetColor(EmissionColorCache, value[i]);
+                renderers[i].material.EnableKeyword("_EMISSION"); // 이걸 해줘야 업데이트가 적용됨
             }
         }
     }
@@ -23,6 +26,7 @@ public class Player : LivingEntity
     {
         base.Awake();
         _originalColors = EmissionColors;
+        _playerAttackController = GetComponent<PlayerAttackController>();
     }
 
     private void Update()
@@ -46,5 +50,10 @@ public class Player : LivingEntity
 
     public Player() : base(EntityType.Player)
     {
+    }
+
+    public void ChargeGage(int gage)
+    {
+        _playerAttackController.ChargeGage(gage);
     }
 }

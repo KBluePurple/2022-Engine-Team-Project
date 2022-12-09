@@ -1,6 +1,8 @@
+using AchromaticDev.Util;
 using UnityEngine;
 using UnityEngine.UIElements;
-public class InGameUI : MonoBehaviour
+
+public class InGameUI : MonoSingleton<InGameUI>
 {
     private UIDocument _uiDocument;
     private VisualElement _root;
@@ -14,7 +16,10 @@ public class InGameUI : MonoBehaviour
     private VisualElement _playerHealthBarFill;
     private VisualElement _playerProfilePicture;
 
-    private void Start()
+    private VisualElement _playerChargeBar;
+    private VisualElement _playerChargeBarFill;
+
+    private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
         _root = _uiDocument.rootVisualElement;
@@ -29,6 +34,9 @@ public class InGameUI : MonoBehaviour
         _playerHealthBar = playerInfo.Q<VisualElement>(null, "health-bar");
         _playerHealthBarFill = _playerHealthBar.Q<VisualElement>(null, "fill");
         _playerProfilePicture = _root.Q<VisualElement>("profile-picture");
+
+        _playerChargeBar = _root.Q<VisualElement>("charge-bar");
+        _playerChargeBarFill = _playerChargeBar.Q<VisualElement>(null, "fill");
     }
 
     public void SetBossInfo(string bossName, float health, float maxHealth)
@@ -52,5 +60,10 @@ public class InGameUI : MonoBehaviour
     public void UpdatePlayerHealth(float health, float maxHealth)
     {
         _playerHealthBarFill.style.width = health / maxHealth * 100;
+    }
+
+    public void UpdateChargeGage(float charge, float maxCharge)
+    {
+        _playerChargeBarFill.style.height = Length.Percent(charge / maxCharge * 100);
     }
 }

@@ -1,5 +1,6 @@
-﻿using Script.Util;
+﻿using AchromaticDev.Util;
 using UnityEngine;
+
 namespace Script.Manager
 {
     public class GameManager : MonoSingleton<GameManager>

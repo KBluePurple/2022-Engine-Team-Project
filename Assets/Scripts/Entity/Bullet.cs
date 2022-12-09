@@ -1,6 +1,7 @@
 ﻿using AchromaticDev.Util.Pooling;
 using Script.Manager;
 using UnityEngine;
+
 [RequireComponent(typeof(Collider))]
 public class Bullet : Entity
 {
@@ -32,6 +33,7 @@ public class Bullet : Entity
         if (!other.gameObject.CompareTag("Enemy")) return;
 
         other.gameObject.GetComponent<Enemy>().TakeDamage(new Attack(1, this));
+        GameManager.Instance.player.ChargeGage(10);
         Destroy(gameObject);
     }
 }

@@ -36,18 +36,16 @@ namespace AchromaticDev.Util.Pooling
                 return null;
             }
 
-            ;
-
-            if (_instance.prefabDict.ContainsKey(prefab))
+            if (Instance.prefabDict.ContainsKey(prefab))
                 return _instance.prefabDict[prefab].GetObject(prefab, position, rotation, parent);
 
             Debug.Log("PoolManager: No pool found for " + prefab.name);
 
-            _instance.prefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
-            _instance.prefabDict[prefab].prefab = prefab;
-            _instance.prefabDict[prefab].Initialize(_instance.transform);
+            Instance.prefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
+            Instance.prefabDict[prefab].prefab = prefab;
+            Instance.prefabDict[prefab].Initialize(Instance.transform);
 
-            return _instance.prefabDict[prefab].GetObject(prefab, position, rotation, parent);
+            return Instance.prefabDict[prefab].GetObject(prefab, position, rotation, parent);
         }
 
         public static GameObject Instantiate(GameObject prefab, Transform parent = null)
@@ -57,13 +55,13 @@ namespace AchromaticDev.Util.Pooling
 
         public static void Destroy(GameObject gameObject)
         {
-            if (!_instance.poolObjectCache.ContainsKey(gameObject)) return;
+            if (!Instance.poolObjectCache.ContainsKey(gameObject)) return;
 
-            var prefab = _instance.poolObjectCache[gameObject].pool.prefab;
+            var prefab = Instance.poolObjectCache[gameObject].pool.prefab;
 
-            if (_instance.prefabDict.ContainsKey(prefab))
+            if (Instance.prefabDict.ContainsKey(prefab))
             {
-                _instance.prefabDict[prefab].ReturnObject(gameObject);
+                Instance.prefabDict[prefab].ReturnObject(gameObject);
             }
             else
             {
@@ -74,7 +72,7 @@ namespace AchromaticDev.Util.Pooling
 
         public static void Destroy(GameObject gameObject, float delay)
         {
-            _instance.StartCoroutine(ReturnObject(gameObject, delay));
+            Instance.StartCoroutine(ReturnObject(gameObject, delay));
         }
 
         private static IEnumerator ReturnObject(GameObject gameObject, float delay)

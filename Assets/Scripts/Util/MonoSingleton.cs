@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-namespace Script.Util
+
+namespace AchromaticDev.Util
 {
     [SuppressMessage("ReSharper", "StaticMemberInGenericType")]
     public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
