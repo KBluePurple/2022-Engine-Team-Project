@@ -52,12 +52,12 @@ namespace AchromaticDev.Util.Pooling
                 if (poolObject == null)
                     poolObject = obj.AddComponent<PoolObject>();
 
-                PoolManager.Instance.poolObjectCache[obj] = poolObject;
+                PoolManager.Instance.PoolObjectCache[obj] = poolObject;
                 poolObject.pool = this;
             }
 
             obj.SetActive(true);
-            PoolManager.Instance.poolObjectCache[obj].onSpawn?.Invoke();
+            PoolManager.Instance.PoolObjectCache[obj].onSpawn?.Invoke();
 
             return obj;
         }
@@ -65,7 +65,7 @@ namespace AchromaticDev.Util.Pooling
         public void ReturnObject(GameObject obj)
         {
             obj.SetActive(false);
-            if (PoolManager.Instance.poolObjectCache.TryGetValue(obj, out var poolObject))
+            if (PoolManager.Instance.PoolObjectCache.TryGetValue(obj, out var poolObject))
             {
                 if (_pool.Contains(poolObject))
                 {
@@ -82,7 +82,7 @@ namespace AchromaticDev.Util.Pooling
         {
             foreach (var poolObject in _pool)
             {
-                PoolManager.Instance.poolObjectCache.Remove(poolObject.gameObject);
+                PoolManager.Instance.PoolObjectCache.Remove(poolObject.gameObject);
                 Destroy(poolObject.gameObject);
             }
 

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6856796408489325002}
   - component: {fileID: 6856796408489325003}
   - component: {fileID: 6856796408489325000}
-  - component: {fileID: 6856796408489325001}
   - component: {fileID: 6856796408489325006}
+  - component: {fileID: 3803143157386432587}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -99,25 +99,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6856796408489325001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6856796408489325004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57b3d537e28f4e70803f401b6a5ac5f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pool: {fileID: 0}
-  onSpawn:
-    m_PersistentCalls:
-      m_Calls: []
-  onDespawn:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6856796408489325006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,3 +119,22 @@ MonoBehaviour:
       m_Calls: []
   <Health>k__BackingField: 100
   <MaxHealth>k__BackingField: 100
+--- !u!114 &3803143157386432587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6856796408489325004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eeaa7ccc0c845dab478157c585adcce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool: {fileID: 0}
+  onSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  onDespawn:
+    m_PersistentCalls:
+      m_Calls: []

@@ -6,8 +6,8 @@ namespace AchromaticDev.Util.Pooling
 {
     public class PoolManager : MonoSingleton<PoolManager>
     {
-        internal readonly Dictionary<GameObject, Pool> prefabDict = new();
-        internal readonly Dictionary<GameObject, PoolObject> poolObjectCache = new();
+        private readonly Dictionary<GameObject, Pool> _prefabDict = new();
+        internal readonly Dictionary<GameObject, PoolObject> PoolObjectCache = new();
 
         [RuntimeInitializeOnLoadMethod]
         private static void Initialize()
@@ -17,14 +17,6 @@ namespace AchromaticDev.Util.Pooling
             var go = new GameObject("PoolManager");
             _instance = go.AddComponent<PoolManager>();
             DontDestroyOnLoad(go);
-
-            var pools = Resources.LoadAll<Pool>("Pools");
-
-            foreach (var poolSetting in pools)
-            {
-                poolSetting.Initialize(_instance.transform);
-                _instance.prefabDict.Add(poolSetting.prefab, poolSetting);
-            }
         }
 
         public static GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation,
@@ -36,16 +28,14 @@ namespace AchromaticDev.Util.Pooling
                 return null;
             }
 
-            if (Instance.prefabDict.ContainsKey(prefab))
-                return _instance.prefabDict[prefab].GetObject(prefab, position, rotation, parent);
+            if (Instance._prefabDict.ContainsKey(prefab))
+                return _instance._prefabDict[prefab].GetObject(prefab, position, rotation, parent);
 
-            Debug.Log("PoolManager: No pool found for " + prefab.name);
+            Instance._prefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
+            Instance._prefabDict[prefab].prefab = prefab;
+            Instance._prefabDict[prefab].Initialize(Instance.transform);
 
-            Instance.prefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
-            Instance.prefabDict[prefab].prefab = prefab;
-            Instance.prefabDict[prefab].Initialize(Instance.transform);
-
-            return Instance.prefabDict[prefab].GetObject(prefab, position, rotation, parent);
+            return Instance._prefabDict[prefab].GetObject(prefab, position, rotation, parent);
         }
 
         public static GameObject Instantiate(GameObject prefab, Transform parent = null)
@@ -55,13 +45,13 @@ namespace AchromaticDev.Util.Pooling
 
         public static void Destroy(GameObject gameObject)
         {
-            if (!Instance.poolObjectCache.ContainsKey(gameObject)) return;
+            if (!Instance.PoolObjectCache.ContainsKey(gameObject)) return;
 
-            var prefab = Instance.poolObjectCache[gameObject].pool.prefab;
+            var prefab = Instance.PoolObjectCache[gameObject].pool.prefab;
 
-            if (Instance.prefabDict.ContainsKey(prefab))
+            if (Instance._prefabDict.ContainsKey(prefab))
             {
-                Instance.prefabDict[prefab].ReturnObject(gameObject);
+                Instance._prefabDict[prefab].ReturnObject(gameObject);
             }
             else
             {
