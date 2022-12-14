@@ -24,6 +24,24 @@ public class TitleUI : MonoBehaviour
         _root.Q<Button>("startButton").clicked += OnStartButtonClicked;
         _root.Q<Button>("settingsButton").clicked += OnSettingsButtonClicked;
         _root.Q<Button>("exitButton").clicked += OnExitButtonClicked;
+        _root.Q<Slider>("volumeSlider").RegisterValueChangedCallback(OnVolumeSliderValueChanged);
+        _root.Q<Slider>("effectSlider").RegisterValueChangedCallback(OnEffectSliderValueChanged);
+        _root.Q<Button>("closeSettingsButton").clicked += OnCloseSettingsButtonClicked;
+    }
+
+    private void OnCloseSettingsButtonClicked()
+    {
+        _root.Q<VisualElement>("setting-panel").RemoveFromClassList("show");
+    }
+
+    private void OnVolumeSliderValueChanged(ChangeEvent<float> evt)
+    {
+        Debug.Log(evt.newValue);
+    }
+
+    private void OnEffectSliderValueChanged(ChangeEvent<float> evt)
+    {
+        Debug.Log(evt.newValue);
     }
 
     private void OnStartButtonClicked()
@@ -33,7 +51,7 @@ public class TitleUI : MonoBehaviour
 
     private void OnSettingsButtonClicked()
     {
-        Debug.Log("Settings");
+        _root.Q<VisualElement>("setting-panel").AddToClassList("show");
     }
 
     private void OnExitButtonClicked()

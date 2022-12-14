@@ -12,18 +12,35 @@
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
-    background-color: rgba(70, 82, 84, 255);
-    color: rgba(217, 217, 217, 255);
+    background-color: rgb(70, 82, 84);
+    color: rgb(217, 217, 217);
 }
 
 .unity-button:hover {
     width: 400px;
     font-size: 40px;
-    background-color: rgba(66, 73, 75, 255);
+    background-color: rgb(66, 73, 75);
 }
 
 .unity-button:hover:active:focus {
     width: 400px;
     font-size: 40px;
-    background-color: rgba(49, 57, 58, 255);
+    background-color: rgb(49, 57, 58);
+}
+
+#setting-panel {
+    opacity: 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    transition-property: all;
+    translate: 0 1100px;
+}
+
+#setting-panel.show {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.unity-slider:focus {
+    background-color: rgba(255, 255, 255, 255);
 }
