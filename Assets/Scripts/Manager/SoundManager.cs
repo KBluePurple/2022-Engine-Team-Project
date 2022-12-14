@@ -15,7 +15,7 @@ namespace Script.Manager
             GameObject sound = PoolManager.Instantiate(soundPrefab, position, Quaternion.identity);
             sound.transform.SetParent(transform);
 
-            AudioSource cachedComponent = sound.GetCachedComponent<AudioSource>();
+            AudioSource cachedComponent = sound.GetComponent<AudioSource>();
             cachedComponent.clip = clip;
             cachedComponent.Play();
 
