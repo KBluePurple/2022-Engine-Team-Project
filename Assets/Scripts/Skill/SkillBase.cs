@@ -6,6 +6,8 @@ namespace Skill
     [Serializable]
     public abstract class SkillBase : ScriptableObject
     {
+        public Action OnSkillUnlocked = delegate { };
+        
         public Sprite skillImage;
         public float coolTime;
         [NonSerialized] public float CoolTimeLeft;
@@ -25,6 +27,7 @@ namespace Skill
         public void Unlock()
         {
             IsUnlock = true;
+            OnSkillUnlocked?.Invoke();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Skill;
+﻿using System;
+using DG.Tweening;
+using Skill;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,20 +13,42 @@ namespace UI
         [SerializeField] private Image coolTimeImage;
         
         private SkillBase _skill;
-        
+        private bool _isLock = true;
+
+        private Color _tempColor;
+
+        private void Awake()
+        {
+            _tempColor = coolTimeImage.color;
+            _tempColor.a = 0.6f;
+        }
+
         public void SetSkill(SkillBase skill)
         {
             _skill = skill;
             skillImage.sprite = skill.skillImage;
             lockImage.gameObject.SetActive(!skill.IsUnlock);
+            
+            _skill.OnSkillUnlocked += OnSkillUnlocked;
+        }
+
+        private void OnSkillUnlocked()
+        {
+            (lockImage.transform as RectTransform).DOAnchorPosY(-200, 0.5f)
+                .SetEase(Ease.InOutBack);
+
+            coolTimeImage.DOFade(0, 0.5f)
+                .OnComplete(() =>
+                {
+                    _isLock = false;
+                });
         }
 
         private void Update()
         {
             if (_skill == null) return;
-            if (!_skill.IsUnlock) return;
-            
-            lockImage.gameObject.SetActive(false);
+            if (_isLock) return;
+            coolTimeImage.color = _tempColor;
             coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
         }
     }
