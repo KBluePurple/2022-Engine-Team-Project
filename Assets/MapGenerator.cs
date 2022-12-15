@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,18 +5,20 @@ public class MapGenerator : MonoBehaviour
 {
     public Transform parent;
     public GameObject[] trees;
-    
-    public Vector2 mapSize;
 
-    [ContextMenu("Generate")]
+    public Vector2 mapSize;
+    
+    public float spacing = 10;
+
+    [ContextMenu("Generate Map")]
     public void GenerateMap()
     {
-        for (int i = 0; i < mapSize.x / 20; i++)
+        for (int i = 0; i < mapSize.x / spacing; i++)
         {
-            for (int j = 0; j < mapSize.y / 20; j++)
+            for (int j = 0; j < mapSize.y / spacing; j++)
             {
-                Vector3 pos = new Vector3(i * 20, 0, j * 20);
-                var sphere = Random.insideUnitSphere * 10;
+                Vector3 pos = new Vector3(i * spacing, 0, j * spacing);
+                var sphere = Random.insideUnitSphere * (spacing / 2);
                 sphere.y = 0;
                 pos += sphere;
                 pos -= new Vector3(mapSize.x / 2, 0, mapSize.y / 2);
@@ -29,6 +28,15 @@ public class MapGenerator : MonoBehaviour
         }
     }
     
+    [ContextMenu("Reset Map")]
+    public void ResetMap()
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
