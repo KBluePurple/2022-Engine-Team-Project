@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
-namespace AchromaticDev.Util.Pooling
+namespace KBluePurple.Util
 {
     public class PoolObject : MonoBehaviour
     {
