@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AchromaticDev.Util;
 using UnityEngine;
 
-namespace AchromaticDev.Util.Pooling
+namespace KBluePurple.Util
 {
     public class PoolManager : MonoSingleton<PoolManager>
     {
@@ -30,6 +31,8 @@ namespace AchromaticDev.Util.Pooling
 
             if (Instance._prefabDict.ContainsKey(prefab))
                 return _instance._prefabDict[prefab].GetObject(prefab, position, rotation, parent);
+
+            Debug.Log("PoolManager: No pool found for " + prefab.name);
 
             Instance._prefabDict.Add(prefab, ScriptableObject.CreateInstance<Pool>());
             Instance._prefabDict[prefab].prefab = prefab;

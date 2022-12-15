@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace AchromaticDev.Util.Pooling
+namespace KBluePurple.Util
 {
     [UnityEngine.CreateAssetMenu(fileName = "New Pool Settings", menuName = "AchromaticDev/Pooling", order = 0)]
     public class Pool : ScriptableObject

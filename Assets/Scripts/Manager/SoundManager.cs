@@ -1,5 +1,5 @@
 ﻿using AchromaticDev.Util;
-using AchromaticDev.Util.Pooling;
+using KBluePurple.Util;
 using UnityEngine;
 namespace Script.Manager
 {
