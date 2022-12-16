@@ -4747,7 +4747,7 @@ GameObject:
   - component: {fileID: 19940550}
   - component: {fileID: 8226728}
   - component: {fileID: -5325124775199452994}
-  - component: {fileID: 7677016078267823428}
+  - component: {fileID: -7115977894625579622}
   m_Layer: 0
   m_Name: MagicMissileBlue
   m_TagString: Untagged
@@ -9593,7 +9593,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7677016078267823428
+--- !u!114 &-7115977894625579622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9602,12 +9602,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 119216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a187e1dc5fe86d4eaceba222f82d4d6, type: 3}
+  m_Script: {fileID: 11500000, guid: ce1b51ef096d5fb49b523ee6b253b093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 4
-  lifeTime: 3
+  speed: 5
+  lifeTime: 5
   nowTime: 0
   target: {fileID: 0}
 --- !u!1 &146824

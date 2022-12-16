@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour
                 x = rand == 0 ? -21 : 21;
                 break;
         }
-        PoolManager.Instantiate(bullet, new Vector3(x, 1, z), Quaternion.Euler(-90, 0, 0));
+        PoolManager.Instantiate(bullet, new Vector3(x, 1, z), Quaternion.identity);
     }
-
 }

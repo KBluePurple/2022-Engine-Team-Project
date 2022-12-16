@@ -577,7 +577,7 @@ namespace MoreMountains.Feedbacks
 			//MMFeedbackNVEmphasis.FeedbackTypeAuthorized = HapticEmphasis;
 			//  
 			//MMF_NVPreset.FeedbackTypeAuthorized = HapticPreset;
-			//MMFeedbackNVPreset.FeedbackTypeAuthorized = HapticPreset;
+			// MMFeedbackNVPreset.FeedbackTypeAuthorized = HapticPreset;
 			#endif
   
 			MMF_Light.FeedbackTypeAuthorized = Light;
