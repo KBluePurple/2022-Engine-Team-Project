@@ -3,17 +3,16 @@ using System.Collections;
 using Skill;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
 
-    [FormerlySerializedAs("_skills")] [SerializeField]
-    private SkillBase[] skills = new SkillBase[3];
+    [SerializeField] private SkillBase[] skills = new SkillBase[3];
 
     private Camera _mainCamera;
+    public Action<Vector3> OnPlayerMoved = delegate { };
 
     private void Awake()
     {
@@ -63,7 +62,7 @@ public class Player : MonoBehaviour
         {
             skills[2].UseSkill(this);
         }
-        
+
         // unlock keys for debug
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -77,6 +76,8 @@ public class Player : MonoBehaviour
         {
             skills[2].Unlock();
         }
+
+        OnPlayerMoved?.Invoke(transform.position);
     }
 
     public void Dash()
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
         var h = Input.GetAxisRaw("Horizontal");
         var v = Input.GetAxisRaw("Vertical");
         var input = new Vector3(h, 0, v).normalized;
-        
+
         var direction = _mainCamera.transform.TransformDirection(input);
         direction.y = 0;
         transform.position += direction * dashSpeed;
@@ -92,11 +93,9 @@ public class Player : MonoBehaviour
 
     public void Bomb()
     {
-        
     }
 
     public void Heal()
     {
-        
     }
 }

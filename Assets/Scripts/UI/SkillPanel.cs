@@ -34,9 +34,10 @@ namespace UI
 
         private void OnSkillUnlocked()
         {
-            (lockImage.transform as RectTransform).DOAnchorPosY(-200, 0.5f)
+            (lockImage.transform as RectTransform).DOAnchorPosY(-200, 1f)
                 .SetEase(Ease.InOutBack);
-
+            lockImage.DOFade(0, 0.5f)
+                .OnComplete(() => lockImage.gameObject.SetActive(false));
             coolTimeImage.DOFade(0, 0.5f)
                 .OnComplete(() =>
                 {
@@ -46,7 +47,6 @@ namespace UI
 
         private void Update()
         {
-            if (_skill == null) return;
             if (_isLock) return;
             coolTimeImage.color = _tempColor;
             coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
