@@ -564,20 +564,20 @@ namespace MoreMountains.Feedbacks
 			MMFeedbackSetActive.FeedbackTypeAuthorized = SetActive;
 		  
 			#if MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
-			MMF_Haptics.FeedbackTypeAuthorized = HapticClip;
-			MMFeedbackHaptics.FeedbackTypeAuthorized = HapticClip;
-
-			MMF_NVContinuous.FeedbackTypeAuthorized = HapticContinuous;
-			MMFeedbackNVContinuous.FeedbackTypeAuthorized = HapticContinuous;
-			  
-			MMF_NVControl.FeedbackTypeAuthorized = HapticControl;
-			MMFeedbackNVControl.FeedbackTypeAuthorized = HapticControl;
-			  
-			MMF_NVEmphasis.FeedbackTypeAuthorized = HapticEmphasis;
-			MMFeedbackNVEmphasis.FeedbackTypeAuthorized = HapticEmphasis;
-			  
-			MMF_NVPreset.FeedbackTypeAuthorized = HapticPreset;
-			MMFeedbackNVPreset.FeedbackTypeAuthorized = HapticPreset;
+			//MMF_Haptics.FeedbackTypeAuthorized = HapticClip;
+			//MMFeedbackHaptics.FeedbackTypeAuthorized = HapticClip;
+			//
+			//MMF_NVContinuous.FeedbackTypeAuthorized = HapticContinuous;
+			//MMFeedbackNVContinuous.FeedbackTypeAuthorized = HapticContinuous;
+			//  
+			//MMF_NVControl.FeedbackTypeAuthorized = HapticControl;
+			//MMFeedbackNVControl.FeedbackTypeAuthorized = HapticControl;
+			//  
+			//MMF_NVEmphasis.FeedbackTypeAuthorized = HapticEmphasis;
+			//MMFeedbackNVEmphasis.FeedbackTypeAuthorized = HapticEmphasis;
+			//  
+			//MMF_NVPreset.FeedbackTypeAuthorized = HapticPreset;
+			//MMFeedbackNVPreset.FeedbackTypeAuthorized = HapticPreset;
 			#endif
   
 			MMF_Light.FeedbackTypeAuthorized = Light;
