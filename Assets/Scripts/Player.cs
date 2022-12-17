@@ -4,20 +4,43 @@ using Skill;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+using MoreMountains.Feedbacks;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, HitAble
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
+    private float bombRadius = 27.5f;
+    [SerializeField] private LayerMask bulletLayer;
+
 
     [FormerlySerializedAs("_skills")] [SerializeField]
     private SkillBase[] skills = new SkillBase[3];
 
     private Camera _mainCamera;
 
+    #region 피드백 관련
+    [SerializeField] private MMFeedbacks hitFeedbacks;
+    [SerializeField] private MMFeedbacks healFeedbacks;
+    [SerializeField] private MMFeedbacks bombFeedback;
+    #endregion
+
+    #region 스테이터스 관련
+    private int maxHp = 100;
+    private int nowHp;
+    private int defence = 0;
+
+    private float invincivilityTime = 0.25f;
+    private bool isInvincivility = false;
+    #endregion
+
+    private HpBar hpBar;
+
     private void Awake()
     {
         _mainCamera = Camera.main;
+        hpBar = transform.Find("Health Bar Canvas").GetComponent<HpBar>();
+        nowHp = maxHp;
     }
 
     private void Start()
@@ -28,6 +51,13 @@ public class Player : MonoBehaviour
         }
 
         StartCoroutine(CoolTime());
+    }
+
+    IEnumerator InvincivilityCheck()
+    {
+        isInvincivility = true;
+        yield return new WaitForSeconds(invincivilityTime);
+        isInvincivility = false;
     }
 
     private IEnumerator CoolTime()
@@ -92,11 +122,38 @@ public class Player : MonoBehaviour
 
     public void Bomb()
     {
+        Collider[] col = Physics.OverlapSphere(transform.position, bombRadius, bulletLayer);
         
+        foreach(Collider obj in col)
+        {
+            Bullet bullet = obj.GetComponent<Bullet>();
+            if (bullet != null)
+            {
+                bullet.DestoryAction();
+            }
+        }
+        bombFeedback?.PlayFeedbacks();
     }
 
     public void Heal()
     {
+        nowHp += 10;
+        nowHp = Mathf.Clamp(nowHp, 0, maxHp);
+
+        hpBar.ChangeHp((float)nowHp / maxHp);
+        healFeedbacks?.PlayFeedbacks();
+    }
+
+    public void Hit(int damage)
+    {
+        if (isInvincivility == true) return;
+
+        StartCoroutine(InvincivilityCheck());
+
+        nowHp -= damage - defence;
+        nowHp = Mathf.Clamp(nowHp, 0, maxHp);
         
+        hpBar.ChangeHp((float)nowHp / maxHp);
+        hitFeedbacks?.PlayFeedbacks();
     }
 }

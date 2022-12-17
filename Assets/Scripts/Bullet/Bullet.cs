@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         transform.Translate(targetVec.normalized * speed * Time.deltaTime);
     }
 
-    private void DestoryAction()
+    public void DestoryAction()
     {
         nowTime = 0;
         PoolManager.Destroy(gameObject);
