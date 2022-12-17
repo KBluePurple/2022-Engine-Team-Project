@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,24 +9,47 @@ public class RotateBullet : MonoBehaviour
     [SerializeField] private int damage = 10;
     [SerializeField] private float speed = 4f;
     [SerializeField] private float lifeTime = 3f;
-    [SerializeField] private float nowTime = 0;
+    [SerializeField] private float nowTime;
     [SerializeField] private GameObject target;
-
-    Vector3 targetVec;
+    
+    private Vector3 targetPos;
 
     private void OnEnable()
     {
         target = GameObject.Find("Player");
-        targetVec = target.transform.position - transform.position;
+        targetPos = target.transform.position;
+        transform.rotation = Quaternion.LookRotation(Vector3.up);
     }
 
     private void Update()
     {
         nowTime += Time.deltaTime;
-        if (nowTime >= lifeTime)
-            DestoryAction();
+        var transformCache = transform;
 
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        if (nowTime >= lifeTime)
+        {
+            var rotation = Quaternion.LookRotation(Vector3.down);
+            transformCache.rotation = Quaternion.Slerp(transformCache.rotation, rotation, Time.deltaTime * 2f);
+        }
+        else
+        {
+            var lookPos = targetPos - transformCache.position;
+            var rotation = Quaternion.LookRotation(lookPos);
+            transformCache.rotation = Quaternion.Slerp(transformCache.rotation, rotation, Time.deltaTime * 2f);
+        }
+
+        transformCache.position += transformCache.forward * (speed * Time.deltaTime);
+        
+        if (transform.position.y < -10)
+        {
+            DestoryAction();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.forward);
     }
 
     private void DestoryAction()
@@ -36,11 +60,10 @@ public class RotateBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        HitAble target = other.GetComponent<HitAble>();
-        if (target != null)
-        {
-            target.Hit(damage);
-            DestoryAction();
-        }
+        var hitAble = other.GetComponent<HitAble>();
+        if (hitAble == null) return;
+        
+        hitAble.Hit(damage);
+        DestoryAction();
     }
 }

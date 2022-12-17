@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private float speed = 3.5f;
+    [SerializeField] private float speed = 4f;
     private Camera _mainCamera;
 
     private void Awake()
@@ -12,8 +12,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
+        var h = Input.GetAxisRaw("Horizontal");
+        var v = Input.GetAxisRaw("Vertical");
         var input = new Vector3(h, 0, v);
 
         var direction = _mainCamera.transform.TransformDirection(input);
