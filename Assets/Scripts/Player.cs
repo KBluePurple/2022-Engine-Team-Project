@@ -5,11 +5,13 @@ using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
 using MoreMountains.Feedbacks;
+using KBluePurple.Util;
 
 public class Player : MonoBehaviour, HitAble
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
+    [SerializeField] private GameObject dashParticle; 
     private float bombRadius = 27.5f;
     [SerializeField] private LayerMask bulletLayer;
 
@@ -93,7 +95,11 @@ public class Player : MonoBehaviour, HitAble
         {
             skills[2].UseSkill(this);
         }
-        
+        else if (Input.GetKeyDown(KeyCode.Semicolon))
+        {
+            skills[3].UseSkill(this);
+        }
+
         // unlock keys for debug
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -107,10 +113,16 @@ public class Player : MonoBehaviour, HitAble
         {
             skills[2].Unlock();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            skills[3].Unlock();
+        }
     }
 
     public void Dash()
     {
+        PoolManager.Instantiate(dashParticle, transform.position, Quaternion.identity);
+
         var h = Input.GetAxisRaw("Horizontal");
         var v = Input.GetAxisRaw("Vertical");
         var input = new Vector3(h, 0, v).normalized;
@@ -118,6 +130,7 @@ public class Player : MonoBehaviour, HitAble
         var direction = _mainCamera.transform.TransformDirection(input);
         direction.y = 0;
         transform.position += direction * dashSpeed;
+        PoolManager.Instantiate(dashParticle, transform.position, Quaternion.identity);
     }
 
     public void Bomb()
@@ -142,6 +155,11 @@ public class Player : MonoBehaviour, HitAble
 
         hpBar.ChangeHp((float)nowHp / maxHp);
         healFeedbacks?.PlayFeedbacks();
+    }
+
+    public void Hide()
+    {
+
     }
 
     public void Hit(int damage)
