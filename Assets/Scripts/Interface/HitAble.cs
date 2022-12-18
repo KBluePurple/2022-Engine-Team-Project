@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface HitAble
+public interface IHitAble
 {
-    public abstract void Hit(int damage);
+    public bool Hit(int damage);
 }

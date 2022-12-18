@@ -9602,12 +9602,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 119216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce1b51ef096d5fb49b523ee6b253b093, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a187e1dc5fe86d4eaceba222f82d4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  speed: 5
-  lifeTime: 5
+  speed: 4
+  lifeTime: 3
   nowTime: 0
   target: {fileID: 0}
 --- !u!1 &146824

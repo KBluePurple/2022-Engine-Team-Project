@@ -1,46 +1,57 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using Skill;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using MoreMountains.Feedbacks;
 
-public class Player : MonoBehaviour, HitAble
+public class Player : MonoBehaviour, IHitAble
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
-    private float bombRadius = 27.5f;
+    [SerializeField] private float bombRadius = 27.5f;
     [SerializeField] private LayerMask bulletLayer;
-
-
-    [FormerlySerializedAs("_skills")] [SerializeField]
-    private SkillBase[] skills = new SkillBase[3];
+    
+    [SerializeField] private SkillBase[] skills = new SkillBase[4];
+    public ReadOnlyCollection<SkillBase> Skills => new(skills);
 
     private Camera _mainCamera;
 
     #region 피드백 관련
+
     [SerializeField] private MMFeedbacks hitFeedbacks;
     [SerializeField] private MMFeedbacks healFeedbacks;
     [SerializeField] private MMFeedbacks bombFeedback;
+
     #endregion
 
     #region 스테이터스 관련
-    private int maxHp = 100;
-    private int nowHp;
-    private int defence = 0;
 
-    private float invincivilityTime = 0.25f;
-    private bool isInvincivility = false;
+    private int _maxHp = 100;
+    private int _nowHp;
+    private int _defence = 0;
+
+    private float _invincibilityTime = 0.25f;
+    private bool _isInvincibility = false;
+
     #endregion
 
-    private HpBar hpBar;
+    private HpBar _hpBar;
+
+    private void OnDrawGizmos()
+    {
+        // bomb radius
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, bombRadius);
+        // Gizmos.DrawWireSphere(transform.position, _bombRadius);
+    }
 
     private void Awake()
     {
         _mainCamera = Camera.main;
-        hpBar = transform.Find("Health Bar Canvas").GetComponent<HpBar>();
-        nowHp = maxHp;
+        _hpBar = transform.Find("Health Bar Canvas").GetComponent<HpBar>();
+        _nowHp = _maxHp;
     }
 
     private void Start()
@@ -53,11 +64,11 @@ public class Player : MonoBehaviour, HitAble
         StartCoroutine(CoolTime());
     }
 
-    IEnumerator InvincivilityCheck()
+    private IEnumerator InvincibilityCheck()
     {
-        isInvincivility = true;
-        yield return new WaitForSeconds(invincivilityTime);
-        isInvincivility = false;
+        _isInvincibility = true;
+        yield return new WaitForSeconds(_invincibilityTime);
+        _isInvincibility = false;
     }
 
     private IEnumerator CoolTime()
@@ -93,8 +104,13 @@ public class Player : MonoBehaviour, HitAble
         {
             skills[2].UseSkill(this);
         }
-        
-        // unlock keys for debug
+        else if (Input.GetKeyDown(KeyCode.Semicolon))
+        {
+            skills[3].UseSkill(this);
+        }
+
+
+#if UNITY_EDITOR // unlock keys for debug
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             skills[0].Unlock();
@@ -107,6 +123,11 @@ public class Player : MonoBehaviour, HitAble
         {
             skills[2].Unlock();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            skills[3].Unlock();
+        }
+#endif
     }
 
     public void Dash()
@@ -114,7 +135,7 @@ public class Player : MonoBehaviour, HitAble
         var h = Input.GetAxisRaw("Horizontal");
         var v = Input.GetAxisRaw("Vertical");
         var input = new Vector3(h, 0, v).normalized;
-        
+
         var direction = _mainCamera.transform.TransformDirection(input);
         direction.y = 0;
         transform.position += direction * dashSpeed;
@@ -122,9 +143,10 @@ public class Player : MonoBehaviour, HitAble
 
     public void Bomb()
     {
-        Collider[] col = Physics.OverlapSphere(transform.position, bombRadius, bulletLayer);
-        
-        foreach(Collider obj in col)
+        var col = Physics.OverlapSphere(transform.position, bombRadius, bulletLayer);
+        Debug.Log(col.Length);
+
+        foreach (Collider obj in col)
         {
             Bullet bullet = obj.GetComponent<Bullet>();
             if (bullet != null)
@@ -132,28 +154,43 @@ public class Player : MonoBehaviour, HitAble
                 bullet.DestoryAction();
             }
         }
+
         bombFeedback?.PlayFeedbacks();
     }
 
     public void Heal()
     {
-        nowHp += 10;
-        nowHp = Mathf.Clamp(nowHp, 0, maxHp);
+        _nowHp += 10;
+        _nowHp = Mathf.Clamp(_nowHp, 0, _maxHp);
 
-        hpBar.ChangeHp((float)nowHp / maxHp);
+        _hpBar.ChangeHp((float)_nowHp / _maxHp);
         healFeedbacks?.PlayFeedbacks();
     }
 
-    public void Hit(int damage)
+    public void Stealth()
     {
-        if (isInvincivility == true) return;
+        StartCoroutine(StealthCoroutine());
+    }
 
-        StartCoroutine(InvincivilityCheck());
+    private IEnumerator StealthCoroutine()
+    {
+        _isInvincibility = true;
+        yield return new WaitForSeconds(3f);
+        _isInvincibility = false;
+    }
 
-        nowHp -= damage - defence;
-        nowHp = Mathf.Clamp(nowHp, 0, maxHp);
-        
-        hpBar.ChangeHp((float)nowHp / maxHp);
+    public bool Hit(int damage)
+    {
+        if (_isInvincibility) return false;
+
+        StartCoroutine(InvincibilityCheck());
+
+        _nowHp -= damage - _defence;
+        _nowHp = Mathf.Clamp(_nowHp, 0, _maxHp);
+
+        _hpBar.ChangeHp((float)_nowHp / _maxHp);
         hitFeedbacks?.PlayFeedbacks();
+
+        return true;
     }
 }
