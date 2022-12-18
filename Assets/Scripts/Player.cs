@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 using MoreMountains.Feedbacks;
 using KBluePurple.Util;
 
-public class Player : MonoBehaviour, HitAble
+public class Player : MonoBehaviour
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
