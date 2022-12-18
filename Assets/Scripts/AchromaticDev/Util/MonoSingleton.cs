@@ -42,7 +42,13 @@ namespace AchromaticDev.Util
                         _instance = singleton.AddComponent<T>();
                         singleton.name = "(singleton) " + typeof(T);
 
-                        if (_isDontDestroyOnLoad) DontDestroyOnLoad(singleton);
+                        _isDontDestroyOnLoad =
+                            typeof(T).GetCustomAttributes(typeof(DontDestroyOnLoadAttribute), true).Length > 0;
+
+                        if (_isDontDestroyOnLoad)
+                            DontDestroyOnLoad(singleton);
+                        else
+                            SceneManager.sceneUnloaded += OnSceneUnloaded;
 
                         Debug.Log(
                             $"[Singleton] An instance of {typeof(T)} is needed in the scene, so '{singleton}' was created.");
@@ -70,23 +76,12 @@ namespace AchromaticDev.Util
             }
         }
 
-        private void OnEnable()
-        {
-            _isDontDestroyOnLoad =
-                typeof(T).GetCustomAttributes(typeof(DontDestroyOnLoadAttribute), true).Length > 0;
-
-            if (_isDontDestroyOnLoad)
-                DontDestroyOnLoad(this);
-            else
-                SceneManager.sceneUnloaded += OnSceneUnloaded;
-        }
-
         public virtual void OnDestroy()
         {
             _applicationIsQuitting = true;
         }
 
-        private void OnSceneUnloaded(Scene scene)
+        private static void OnSceneUnloaded(Scene scene)
         {
             if (!_isDontDestroyOnLoad) _instance = null;
         }

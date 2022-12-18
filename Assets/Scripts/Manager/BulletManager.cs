@@ -8,13 +8,15 @@ namespace Manager
     public class BulletManager : MonoBehaviour
     {
         [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Transform bulletParent;
         [SerializeField] private Transform player;
         
         public void SpawnBullet(Vector3 position, Quaternion rotation)
         {
             var positionOffset = position + player.position;
             positionOffset.y = -1;
-            PoolManager.Instantiate(bulletPrefab, position + positionOffset, rotation);
+            var bullet = PoolManager.Instantiate(bulletPrefab, position + positionOffset, rotation);
+            bullet.transform.SetParent(bulletParent);
         }
         
         public void SpawnBulletCircle(int amount, float radius)
