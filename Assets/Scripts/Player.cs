@@ -25,7 +25,8 @@ public class Player : MonoBehaviour, IHitAble
     #region 피드백 관련
     [SerializeField] private MMFeedbacks hitFeedbacks;
     [SerializeField] private MMFeedbacks healFeedbacks;
-    [SerializeField] private MMFeedbacks bombFeedback;
+    [SerializeField] private MMFeedbacks bombFeedbacks;
+    [SerializeField] private MMFeedbacks stealthFeedbacks;
     #endregion
 
     #region 스테이터스 관련
@@ -155,7 +156,7 @@ public class Player : MonoBehaviour, IHitAble
                 bullet.DestoryAction();
             }
         }
-        bombFeedback?.PlayFeedbacks();
+        bombFeedbacks?.PlayFeedbacks();
     }
 
     public void Heal()
@@ -170,6 +171,7 @@ public class Player : MonoBehaviour, IHitAble
     public void Stealth()
     {
         StartCoroutine(StealthCoroutine());
+        stealthFeedbacks?.PlayFeedbacks();
     }
 
     private IEnumerator StealthCoroutine()
@@ -189,7 +191,8 @@ public class Player : MonoBehaviour, IHitAble
         _nowHp = Mathf.Clamp(_nowHp, 0, _maxHp);
 
         _hpBar.ChangeHp((float)_nowHp / _maxHp);
-        StartCoroutine(InvincibilityCheck());
+
+        hitFeedbacks?.PlayFeedbacks();
 
         return true;
     }
