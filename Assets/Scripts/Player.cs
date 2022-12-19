@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using DG.Tweening;
 using Skill;
 using UI;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour, IHitAble
 {
     [SerializeField] private SelectPanel selectPanel;
     [SerializeField] private float dashSpeed;
-    [SerializeField] private GameObject dashParticle; 
+    [SerializeField] private GameObject dashParticle;
     [SerializeField] private float bombRadius = 27.5f;
     [SerializeField] private LayerMask bulletLayer;
 
@@ -21,19 +22,23 @@ public class Player : MonoBehaviour, IHitAble
     private Camera _mainCamera;
 
     #region 피드백 관련
+
     [SerializeField] private MMFeedbacks hitFeedbacks;
     [SerializeField] private MMFeedbacks healFeedbacks;
     [SerializeField] private MMFeedbacks bombFeedbacks;
     [SerializeField] private MMFeedbacks stealthFeedbacks;
+
     #endregion
 
     #region 스테이터스 관련
+
     private int _maxHp = 100;
     private int _nowHp;
     private int _defence = 0;
 
     private float _invincibilityTime = 0.25f;
     private bool _isInvincibility = false;
+
     #endregion
 
     private HpBar _hpBar;
@@ -108,7 +113,13 @@ public class Player : MonoBehaviour, IHitAble
             skills[3].UseSkill(this);
         }
 
+        foreach (var skill in skills)
+        {
+            skill.Update();
+        }
+
         // unlock keys for debug
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             skills[0].Unlock();
@@ -125,20 +136,19 @@ public class Player : MonoBehaviour, IHitAble
         {
             skills[3].Unlock();
         }
+#endif
     }
 
     public void Dash()
     {
         PoolManager.Instantiate(dashParticle, transform.position, Quaternion.identity);
-
         var h = Input.GetAxisRaw("Horizontal");
         var v = Input.GetAxisRaw("Vertical");
         var input = new Vector3(h, 0, v).normalized;
-        
         var direction = _mainCamera.transform.TransformDirection(input);
         direction.y = 0;
-        transform.position += direction * dashSpeed;
-        PoolManager.Instantiate(dashParticle, transform.position, Quaternion.identity);
+        PoolManager.Instantiate(dashParticle, transform.position + direction * dashSpeed, Quaternion.identity);
+        transform.DOMove(transform.position + direction * dashSpeed, 0.05f).SetEase(Ease.Linear);
     }
 
     public void Bomb()
@@ -154,6 +164,7 @@ public class Player : MonoBehaviour, IHitAble
                 bullet.DestoryAction();
             }
         }
+
         bombFeedbacks?.PlayFeedbacks();
     }
 

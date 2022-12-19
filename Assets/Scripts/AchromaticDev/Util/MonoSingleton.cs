@@ -68,7 +68,13 @@ namespace AchromaticDev.Util
             if (_instance == null)
             {
                 _instance = this as T;
-                DontDestroyOnLoad(gameObject);
+                _isDontDestroyOnLoad =
+                    typeof(T).GetCustomAttributes(typeof(DontDestroyOnLoadAttribute), true).Length > 0;
+
+                if (_isDontDestroyOnLoad)
+                    DontDestroyOnLoad(gameObject);
+                else
+                    SceneManager.sceneUnloaded += OnSceneUnloaded;
             }
             else
             {

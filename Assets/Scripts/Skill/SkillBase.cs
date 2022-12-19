@@ -1,4 +1,5 @@
 ﻿using System;
+using Manager;
 using UnityEngine;
 
 namespace Skill
@@ -10,6 +11,7 @@ namespace Skill
         
         public Sprite skillImage;
         public float coolTime;
+        public float openTime = 30f;
         [NonSerialized] public float CoolTimeLeft;
         [NonSerialized] public bool IsUnlock;
 
@@ -28,6 +30,14 @@ namespace Skill
         {
             IsUnlock = true;
             OnSkillUnlocked?.Invoke();
+        }
+
+        public void Update()
+        {
+            if (GameManager.Instance.PlayTime < openTime) return;
+            if (IsUnlock) return;
+            
+            Unlock();
         }
     }
 }
