@@ -1,8 +1,4 @@
-﻿using System;
-using UnityEngine;
-using MoreMountains.Tools;
-using UnityEditor;
-using UnityEngine.UI;
+﻿using UnityEditor;
 
 namespace MoreMountains.Tools
 {	

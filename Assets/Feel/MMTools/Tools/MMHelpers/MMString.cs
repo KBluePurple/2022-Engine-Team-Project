@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace MoreMountains.Tools
 {

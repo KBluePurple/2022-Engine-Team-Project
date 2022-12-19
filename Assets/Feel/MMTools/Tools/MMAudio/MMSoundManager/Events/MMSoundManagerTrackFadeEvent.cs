@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace MoreMountains.Tools
+﻿namespace MoreMountains.Tools
 {
 	/// <summary>
 	/// This event will let you order the MMSoundManager to fade an entire track's sounds' volume towards the specified FinalVolume

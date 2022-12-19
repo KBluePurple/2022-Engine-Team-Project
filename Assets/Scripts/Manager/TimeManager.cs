@@ -5,22 +5,36 @@ using UnityEngine;
 
 namespace Manager
 {
-    public class TimeManager : MonoSingleton<TimeManager>
+    public class TimeManager : MonoBehaviour
     {
         private void Start()
         {
-            GameManager.Instance.OnGamePaused += OnGamePaused;
-            GameManager.Instance.OnGameResumed += OnGameResumed;
+            GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
         }
 
-        private void OnGamePaused(object sender, EventArgs e)
+        private static void OnGamePaused()
         {
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 0.5f).SetUpdate(true);
         }
-        
-        private void OnGameResumed(object sender, EventArgs e)
+
+        private static void OnGameResumed()
         {
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 0.5f).SetUpdate(true);
+        }
+
+        private void OnGameStateChanged(object sender, GameState e)
+        {
+            switch (e)
+            {
+                case GameState.Pause:
+                    OnGamePaused();
+                    break;
+                case GameState.Play:
+                    OnGameResumed();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(e), e, null);
+            }
         }
     }
 }

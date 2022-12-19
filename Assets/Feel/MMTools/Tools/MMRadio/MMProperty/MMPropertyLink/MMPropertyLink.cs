@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace MoreMountains.Tools
+﻿namespace MoreMountains.Tools
 {
 	/// <summary>
 	/// A class, meant to be extended, used to control a MMProperty and get/set its value

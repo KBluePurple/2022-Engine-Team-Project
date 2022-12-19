@@ -1,5 +1,4 @@
-﻿using MoreMountains.Tools;
-using UnityEngine;
+﻿using UnityEngine;
 #if MM_TEXTMESHPRO
 using TMPro;
 #endif

@@ -2,21 +2,24 @@ using System;
 using AchromaticDev.Util;
 using UnityEngine;
 
+public enum GameState
+{
+    Play,
+    Pause,
+}
+
 namespace Manager
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-        public EventHandler OnGameStart;
-        public EventHandler OnGameEnd;
-        public EventHandler OnGamePaused;
-        public EventHandler OnGameResumed;
-
         [SerializeField] private Player player;
     
         private float _time;
         private int _level;
         private bool _paused;
-    
+        
+        public EventHandler<GameState> OnGameStateChanged;
+
         private void Update()
         {
             _time += Time.deltaTime;
@@ -28,12 +31,12 @@ namespace Manager
                 if (_paused == false)
                 {
                     _paused = true;
-                    OnGamePaused?.Invoke(this, EventArgs.Empty);
+                    OnGameStateChanged.Invoke(this, GameState.Pause);
                 }
                 else
                 {
                     _paused = false;
-                    OnGameResumed?.Invoke(this, EventArgs.Empty);
+                    OnGameStateChanged.Invoke(this, GameState.Play);
                 }
             }
         }
