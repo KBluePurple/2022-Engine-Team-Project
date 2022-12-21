@@ -1,8 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using MoreMountains.Tools;
 using Random = UnityEngine.Random;
 
 namespace MoreMountains.Tools

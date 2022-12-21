@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace MoreMountains.Tools

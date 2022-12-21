@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
-using MoreMountains.Tools;
 using UnityEngine.UI;
 
 namespace MoreMountains.Tools

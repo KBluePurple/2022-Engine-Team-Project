@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using Skill;
 using UI;
 using UnityEngine;
-using UnityEngine.Serialization;
 using MoreMountains.Feedbacks;
 using KBluePurple.Util;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using MoreMountains.Tools;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using MoreMountains.Feedbacks;
-using System;
 
 namespace MoreMountains.Feedbacks
 {	

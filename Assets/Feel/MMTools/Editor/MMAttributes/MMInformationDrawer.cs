@@ -1,10 +1,7 @@
 ﻿#if UNITY_EDITOR
 
-using System;
 using UnityEngine;
 using UnityEditor;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace MoreMountains.Tools
 {	

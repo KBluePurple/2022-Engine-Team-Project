@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
-using System.Text;
 using System.Security.Cryptography;
 using System.Runtime.Serialization.Formatters.Binary;
 

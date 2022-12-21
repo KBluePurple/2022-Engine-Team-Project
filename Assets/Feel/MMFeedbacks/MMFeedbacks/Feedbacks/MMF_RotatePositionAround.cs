@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MoreMountains.Feedbacks
 {

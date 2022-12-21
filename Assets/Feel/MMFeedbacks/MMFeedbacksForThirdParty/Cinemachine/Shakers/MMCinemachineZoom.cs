@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 #if MM_CINEMACHINE
-using Cinemachine;
 #endif
 using MoreMountains.Feedbacks;
 

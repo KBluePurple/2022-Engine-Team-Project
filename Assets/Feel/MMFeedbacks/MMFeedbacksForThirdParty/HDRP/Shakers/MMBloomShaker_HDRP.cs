@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using MoreMountains.Feedbacks;
 using MoreMountains.Tools;
-using UnityEngine.Rendering;
 #if MM_HDRP
 using UnityEngine.Rendering.HighDefinition;
 #endif

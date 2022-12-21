@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 #if MM_POSTPROCESSING
 using UnityEngine.Rendering.PostProcessing;
 #endif
-using MoreMountains.Feedbacks;
 
 namespace MoreMountains.FeedbacksForThirdParty
 {

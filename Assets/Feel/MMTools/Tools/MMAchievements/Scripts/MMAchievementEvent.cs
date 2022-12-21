@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace MoreMountains.Tools
+﻿namespace MoreMountains.Tools
 {
 	/// <summary>
 	/// An event type used to broadcast the fact that an achievement has been unlocked

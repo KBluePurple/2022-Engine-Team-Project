@@ -2,7 +2,6 @@
 using MoreMountains.Feedbacks;
 using UnityEngine.Rendering;
 #if MM_URP
-using UnityEngine.Rendering.Universal;
 #endif
 
 namespace MoreMountains.FeedbacksForThirdParty
