@@ -38,7 +38,7 @@ namespace Manager
                     throw new ArgumentOutOfRangeException(nameof(e), e, null);
             }
         }
-        
+
         private void OnGameOver(object sender, EventArgs e)
         {
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 1f).SetUpdate(true);

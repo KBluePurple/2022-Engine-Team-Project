@@ -12,22 +12,18 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cmVcam;
     private CinemachineTransposer cmTrans;
-    
-    [Header("Pause")]
-    [SerializeField] private CanvasGroup pauseMenu;
-    [SerializeField] private CanvasGroup startMenu;
-    
-    [Header("Settings")]
-    [SerializeField] private CanvasGroup settingsMenu;
 
-    [Header("GameOver")]
-    [SerializeField] private CanvasGroup gameOverMenu;
+    [Header("Pause")] [SerializeField] private CanvasGroup pauseMenu;
+    [SerializeField] private CanvasGroup startMenu;
+
+    [Header("Settings")] [SerializeField] private CanvasGroup settingsMenu;
+
+    [Header("GameOver")] [SerializeField] private CanvasGroup gameOverMenu;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TextMeshProUGUI scoreText;
-    
-    [Header("Fade")]
-    [SerializeField] private CanvasGroup fadeScreen;
+
+    [Header("Fade")] [SerializeField] private CanvasGroup fadeScreen;
 
     private void Awake()
     {
@@ -133,10 +129,7 @@ public class UIManager : MonoBehaviour
             .Append(DOTween.To(() => cmTrans.m_FollowOffset.y, x => cmTrans.m_FollowOffset.y = x, 8, 2f))
             .SetUpdate(true)
             .Play()
-            .OnComplete(() =>
-            {
-                StartCoroutine(ScoreCheck());
-            });
+            .OnComplete(() => { StartCoroutine(ScoreCheck()); });
     }
 
     IEnumerator ScoreCheck()
@@ -155,7 +148,7 @@ public class UIManager : MonoBehaviour
     {
         nowScoreText.text = $"ÇöÀç {(int)GameManager.Instance.score}Á¡";
     }
-    
+
     public void OpenSettings()
     {
         var sequence = DOTween.Sequence();
@@ -165,7 +158,7 @@ public class UIManager : MonoBehaviour
         sequence.SetUpdate(true);
         sequence.Play();
     }
-    
+
     public void CloseSettings()
     {
         var sequence = DOTween.Sequence();

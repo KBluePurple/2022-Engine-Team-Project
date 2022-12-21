@@ -7,7 +7,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject[] trees;
 
     public Vector2 mapSize;
-    
+
     public float spacing = 10;
 
     [ContextMenu("Generate Map")]
@@ -27,7 +27,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
     }
-    
+
     [ContextMenu("Reset Map")]
     public void ResetMap()
     {

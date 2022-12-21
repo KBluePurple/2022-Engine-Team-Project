@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float lifeTime = 3f;
     [SerializeField] private float nowTime;
     [SerializeField] private GameObject target;
-    
+
     private Vector3 targetPos;
 
     private void OnEnable()
@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
         }
 
         transformCache.position += transformCache.forward * (speed * Time.deltaTime);
-        
+
         if (transform.position.y < -10)
         {
             DestoryAction();
@@ -59,7 +59,7 @@ public class Bullet : MonoBehaviour
     {
         var hitAble = other.GetComponent<IHitAble>();
         if (hitAble == null) return;
-        
+
         if (hitAble.Hit(damage))
             DestoryAction();
     }

@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class HpBar : MonoBehaviour
 {
-    [SerializeField]
-    private Image fillArea;
+    [SerializeField] private Image fillArea;
 
     public void ChangeHp(float hpPercentage)
     {

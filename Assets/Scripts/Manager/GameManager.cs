@@ -24,13 +24,14 @@ namespace Manager
         [SerializeField] private Player player;
 
         [NonSerialized] public float GameTime;
-        [SerializeField] private BulletManager bulletManager; 
-    
+        [SerializeField] private BulletManager bulletManager;
+
         private float _time;
         private int _level;
         private bool _paused;
 
         #region 스코어에 필요한 변수
+
         public float score = 0;
         public float hightScore = 0;
 
@@ -38,6 +39,7 @@ namespace Manager
         private string hashHighScore = "HightScore";
 
         public bool isGameEnd = false;
+
         #endregion
 
         public GameState nowGameState = GameState.Title;
@@ -46,7 +48,7 @@ namespace Manager
         public EventHandler<GameState> OnGameStateChanged;
         public EventHandler OnGameOver;
         public EventHandler OnRestart;
-        
+
         private bool _isGameOver;
         public Action OnScoreUpdate;
 
@@ -90,6 +92,7 @@ namespace Manager
         private void Restart()
         {
             StartCoroutine(Coroutine());
+
             IEnumerator Coroutine()
             {
                 OnRestart?.Invoke(this, EventArgs.Empty);
@@ -110,6 +113,7 @@ namespace Manager
             _paused = false;
             OnPauseStateChanged.Invoke(this, PauseState.Play);
         }
+
         public void GameOver()
         {
             OnGameOver.Invoke(this, EventArgs.Empty);

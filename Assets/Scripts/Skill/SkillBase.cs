@@ -8,7 +8,7 @@ namespace Skill
     public abstract class SkillBase : ScriptableObject
     {
         public Action OnSkillUnlocked = delegate { };
-        
+
         public Sprite skillImage;
         public float coolTime;
         public float unlockTime = 30f;
@@ -19,7 +19,7 @@ namespace Skill
         {
             if (!IsUnlock) return;
             if (!(CoolTimeLeft <= 0)) return;
-            
+
             CoolTimeLeft = coolTime;
             OnUseSkill(player);
         }

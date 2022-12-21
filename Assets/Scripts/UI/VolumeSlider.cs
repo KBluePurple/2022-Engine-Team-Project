@@ -10,7 +10,7 @@ namespace UI
         private Slider _slider;
         [SerializeField] private AudioMixer mixer;
         [SerializeField] private AudioMixerGroup mixerGroup;
-        
+
         private void Start()
         {
             _slider = GetComponent<Slider>();
@@ -29,7 +29,7 @@ namespace UI
             PlayerPrefs.SetFloat("Volume", volume);
             _slider.value = volume;
         }
-        
+
         private void OnDestroy()
         {
             PlayerPrefs.Save();

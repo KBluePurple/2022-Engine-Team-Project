@@ -1,6 +1,7 @@
 ﻿using AchromaticDev.Util;
 using KBluePurple.Util;
 using UnityEngine;
+
 namespace Script.Manager
 {
     public class SoundManager : MonoSingleton<SoundManager>

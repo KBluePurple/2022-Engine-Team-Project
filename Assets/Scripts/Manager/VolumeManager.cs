@@ -37,7 +37,7 @@ namespace Manager
                     throw new ArgumentOutOfRangeException(nameof(e), e, null);
             }
         }
-        
+
         private void HandleGameOver(object sender, EventArgs e)
         {
             DOTween.To(() => _colorAdjustments.saturation.value, x => _colorAdjustments.saturation.value = x,

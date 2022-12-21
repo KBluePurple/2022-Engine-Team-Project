@@ -12,7 +12,7 @@ namespace UI
         [SerializeField] private Image skillImage;
         [SerializeField] private Image coolTimeImage;
         [SerializeField] private TextMeshProUGUI lockTimeText;
-        
+
         [SerializeField] private Image activeTimeImage;
 
         private SkillBase _skill;
@@ -31,7 +31,7 @@ namespace UI
             _skill = skill;
             skillImage.sprite = skill.skillImage;
             lockTimeText.gameObject.SetActive(!skill.IsUnlock);
-            
+
             _skill.OnSkillUnlocked += OnSkillUnlocked;
         }
 
@@ -42,10 +42,7 @@ namespace UI
             lockTimeText.DOFade(0, 0.5f)
                 .OnComplete(() => lockTimeText.gameObject.SetActive(false));
             coolTimeImage.DOFade(0, 0.5f)
-                .OnComplete(() =>
-                {
-                    _isLock = false;
-                });
+                .OnComplete(() => { _isLock = false; });
         }
 
         private void Update()

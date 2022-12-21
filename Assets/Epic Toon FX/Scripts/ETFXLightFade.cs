@@ -4,8 +4,7 @@ namespace EpicToonFX
 {
     public class ETFXLightFade : MonoBehaviour
     {
-        [Header("Seconds to dim the light")]
-        public float life = 0.2f;
+        [Header("Seconds to dim the light")] public float life = 0.2f;
         public bool killAfterLife = true;
 
         private Light li;
@@ -31,7 +30,7 @@ namespace EpicToonFX
                 li.intensity -= initIntensity * (Time.deltaTime / life);
                 if (killAfterLife && li.intensity <= 0)
                     //Destroy(gameObject);
-					Destroy(gameObject.GetComponent<Light>());
+                    Destroy(gameObject.GetComponent<Light>());
             }
         }
     }

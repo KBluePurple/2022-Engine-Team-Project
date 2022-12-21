@@ -18,5 +18,4 @@ public class DashParticle : MonoBehaviour
         _nowTime = 0;
         PoolManager.Destroy(gameObject);
     }
-
 }

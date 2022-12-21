@@ -18,7 +18,7 @@ namespace Manager
             var bullet = PoolManager.Instantiate(bulletPrefab, position + positionOffset, rotation);
             bullet.transform.SetParent(bulletParent);
         }
-        
+
         public void SpawnBulletCircle(int amount, float radius)
         {
             for (int i = 0; i < amount; i++)
@@ -31,11 +31,11 @@ namespace Manager
         }
 
         // 원신 뇌음의 권현 양쪽에서 벽 다가오는거
-        public void SpawnBulletWall(int width, int height, int randWall) 
+        public void SpawnBulletWall(int width, int height, int randWall)
         {
-            for (int i = -(height/2); i < height - height/2; i++)
+            for (int i = -(height / 2); i < height - height / 2; i++)
             {
-                for (int j = -(width/2); j < width -width/2; j++)
+                for (int j = -(width / 2); j < width - width / 2; j++)
                 {
                     Vector3 fPos = new Vector3(j, i, 5);
                     Vector3 bPos = new Vector3(j, i, -5);
@@ -58,7 +58,7 @@ namespace Manager
 
         public void SpawnBulletCross(int width, int length)
         {
-            for (int j = -(width/2); j < width -(width/2); j++)
+            for (int j = -(width / 2); j < width - (width / 2); j++)
             {
                 for (int i = 0; i < length; i++)
                 {
@@ -82,10 +82,10 @@ namespace Manager
             {
                 for (int j = -(width / 2); j < width - width / 2; j++) // 아직 미완임
                 {
-                    Vector3 fPos = new Vector3(j, i,  distance);
+                    Vector3 fPos = new Vector3(j, i, distance);
                     Vector3 bPos = new Vector3(j, i, -distance);
                     Vector3 lPos = new Vector3(-distance, i, j);
-                    Vector3 rPos = new Vector3( distance, i, j);
+                    Vector3 rPos = new Vector3(distance, i, j);
 
                     if (noWall != 1)
                         SpawnBullet(fPos, Quaternion.identity);
@@ -101,7 +101,6 @@ namespace Manager
 
         public void SpawnBulletNum()
         {
-
         }
 
         private void Start()
@@ -114,16 +113,15 @@ namespace Manager
         {
             StartCoroutine(RepeatSpawn());
         }
-        
+
         private IEnumerator RepeatSpawn()
         {
             yield return new WaitForSeconds(3f);
             while (true)
             {
-
                 int pattern = Random.Range(1, 5);
 
-                switch(pattern)
+                switch (pattern)
                 {
                     case 1:
                         int randThreeWall = Random.Range(1, 5);
@@ -140,6 +138,7 @@ namespace Manager
                         SpawnBulletCircle(10, 10);
                         break;
                 }
+
                 //SpawnBulletThreeWall(8, 3, 5, 2);
                 //SpawnBulletCross(3, 5);
                 //SpawnBulletWall(15, 5);

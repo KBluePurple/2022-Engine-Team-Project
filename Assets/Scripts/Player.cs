@@ -109,7 +109,7 @@ public class Player : MonoBehaviour, IHitAble
         var transform1 = _mainCamera.transform;
         var position = transform1.position;
         var position1 = transform.position;
-        
+
         var rayHits = Physics.OverlapCapsule(position, position1, 1, LayerMask.GetMask("Tree"));
         var rendererList = new List<Renderer>();
         foreach (var rayHit in rayHits)
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour, IHitAble
             {
                 renderer.material.SetFloat(Surface, 1);
                 renderer.material.SetFloat(ZWrite, 0);
-                
+
                 renderer.material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
             }
             else if (!rendererList.Contains(renderer) && renderer.material.GetFloat(Surface) >= 1)
@@ -187,6 +187,7 @@ public class Player : MonoBehaviour, IHitAble
                 GameManager.Instance.score += 0.1f;
             }
         }
+
         GameManager.Instance.OnScoreUpdate.Invoke();
         bombFeedbacks?.PlayFeedbacks();
     }
@@ -224,7 +225,7 @@ public class Player : MonoBehaviour, IHitAble
 
         _nowHp -= damage - _defence;
         _nowHp = Mathf.Clamp(_nowHp, 0, _maxHp);
-        
+
         if (_nowHp <= 0)
         {
             _nowHp = 0;
