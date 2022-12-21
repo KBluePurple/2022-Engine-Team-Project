@@ -14,19 +14,19 @@ namespace Manager
 
         private void Start()
         {
-            GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+            GameManager.Instance.OnPauseStateChanged += HandleGameStateChanged;
             volume.profile.TryGet(out _colorAdjustments);
         }
 
-        private void HandleGameStateChanged(object sender, GameState e)
+        private void HandleGameStateChanged(object sender, PauseState e)
         {
             switch (e)
             {
-                case GameState.Pause:
+                case PauseState.Pause:
                     DOTween.To(() => _colorAdjustments.saturation.value, x => _colorAdjustments.saturation.value = x,
                         -100, 0.5f).SetUpdate(true);
                     break;
-                case GameState.Play:
+                case PauseState.Play:
                     DOTween.To(() => _colorAdjustments.saturation.value, x => _colorAdjustments.saturation.value = x,
                         0, 0.5f).SetUpdate(true);
                     break;

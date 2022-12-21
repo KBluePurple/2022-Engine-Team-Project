@@ -9,7 +9,7 @@ namespace Manager
     {
         private void Start()
         {
-            GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
+            GameManager.Instance.OnPauseStateChanged += OnGameStateChanged;
         }
 
         private static void OnGamePaused()
@@ -22,14 +22,14 @@ namespace Manager
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, 0.5f).SetUpdate(true);
         }
 
-        private void OnGameStateChanged(object sender, GameState e)
+        private void OnGameStateChanged(object sender, PauseState e)
         {
             switch (e)
             {
-                case GameState.Pause:
+                case PauseState.Pause:
                     OnGamePaused();
                     break;
-                case GameState.Play:
+                case PauseState.Play:
                     OnGameResumed();
                     break;
                 default:

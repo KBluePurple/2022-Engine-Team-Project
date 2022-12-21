@@ -10,7 +10,9 @@ namespace Manager
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private Transform bulletParent;
         [SerializeField] private Transform player;
-        
+
+        private bool isRunning = false;
+
         public void SpawnBullet(Vector3 position, Quaternion rotation)
         {
             var positionOffset = position + player.position;
@@ -107,13 +109,28 @@ namespace Manager
         private void Start()
         {
             // code for debugging
+            //StartCoroutine(RepeatSpawn());
+        }
+
+        public void StartSpawn()
+        {
+            isRunning = true;
             StartCoroutine(RepeatSpawn());
+        }
+
+        public void StopSpawn()
+        {
+            isRunning = false;
+            StopCoroutine(RepeatSpawn());
         }
         
         private IEnumerator RepeatSpawn()
         {
+            yield return new WaitForSeconds(3f);
             while (true)
             {
+                if (isRunning == false) break;
+
                 int pattern = Random.Range(1, 5);
 
                 switch(pattern)
