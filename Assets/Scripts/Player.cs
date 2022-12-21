@@ -64,8 +64,11 @@ public class Player : MonoBehaviour, IHitAble
 
     private void Start()
     {
+        Debug.Log(skills.Length);
         for (var i = 0; i < skills.Length; i++)
         {
+            Debug.Log(skills[i]);
+            skills[i].Init();
             selectPanel.skillPanels[i].SetSkill(skills[i]);
         }
     }

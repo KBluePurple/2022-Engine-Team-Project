@@ -21,22 +21,21 @@ namespace Manager
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-        [SerializeField] private Player player;
+        public Player player;
 
         [NonSerialized] public float GameTime;
         [SerializeField] private BulletManager bulletManager;
 
-        private float _time;
         private int _level;
         private bool _paused;
 
         #region 스코어에 필요한 변수
 
         public float nowScore = 0;
-        public float hightScore = 0;
+        public float highScore = 0;
 
         private string hashNowScore = "NowScore";
-        private string hashHighScore = "HightScore";
+        private string hashHighScore = "HighScore";
 
         #endregion
 
@@ -48,27 +47,19 @@ namespace Manager
         public EventHandler OnRestart;
 
         public Action OnScoreUpdate;
-        public bool _isGameOver;
+        public bool isGameOver;
 
         private void Start()
         {
-            hightScore = PlayerPrefs.GetInt(hashHighScore);
+            highScore = PlayerPrefs.GetInt(hashHighScore);
             OnScoreUpdate?.Invoke();
         }
 
         private void Update()
         {
-            GameTime += Time.deltaTime;
-            if (GameTime >= 60 * _level)
+            if (nowGameState == GameState.InGame)
             {
-                try
-                {
-                    player.Skills[_level++].Unlock();
-                }
-                catch
-                {
-                    // ignored
-                }
+                GameTime += Time.deltaTime;
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -79,7 +70,7 @@ namespace Manager
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                if (_isGameOver) Restart();
+                if (isGameOver) Restart();
                 if (nowGameState != GameState.Title) return;
                 nowGameState = GameState.InGame;
                 bulletManager.StartSpawn();
@@ -95,8 +86,8 @@ namespace Manager
             {
                 OnRestart?.Invoke(this, EventArgs.Empty);
                 yield return new WaitForSecondsRealtime(1f);
+                SceneManager.LoadScene("Middle");
                 Debug.Log("Restart");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
 
@@ -118,7 +109,12 @@ namespace Manager
             if (nowScore > PlayerPrefs.GetInt(hashHighScore))
                  PlayerPrefs.SetInt(hashHighScore, (int)nowScore);
                 
-            _isGameOver = true;
+            isGameOver = true;
+        }
+        
+        public void Exit()
+        {
+            Application.Quit();
         }
     }
 }

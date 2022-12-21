@@ -38,10 +38,16 @@ namespace Skill
             {
                 CoolTimeLeft -= Time.deltaTime;
             }
-            else if (unlockTime >= GameManager.Instance.GameTime && !IsUnlock)
+            else if (unlockTime <= GameManager.Instance.GameTime && !IsUnlock)
             {
                 Unlock();
             }
+        }
+
+        public void Init()
+        {
+            CoolTimeLeft = 0;
+            IsUnlock = false;
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using KBluePurple.Util;
+using Manager;
 
 public class Bullet : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
-        target = GameObject.Find("Player");
+        target = GameManager.Instance.player.gameObject;
         targetPos = target.transform.position;
         transform.rotation = Quaternion.LookRotation(Vector3.up);
     }

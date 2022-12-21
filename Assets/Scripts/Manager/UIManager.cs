@@ -141,7 +141,7 @@ public class UIManager : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance._isGameOver)
+            if (GameManager.Instance.isGameOver)
                 break;
             GameManager.Instance.nowScore++;
             ScoreUpdate();
@@ -152,13 +152,13 @@ public class UIManager : MonoBehaviour
     private void ScoreUpdate()
     {
         inGameNowScoreText.text = $"현재 {(int)GameManager.Instance.nowScore}점";
-        inGameHighScoreText.text = $"최고점수 {(int)GameManager.Instance.hightScore} 점";
+        inGameHighScoreText.text = $"최고점수 {(int)GameManager.Instance.highScore} 점";
     }
 
     private void GameOverScoreUpdate()
     {
         gameOverNowScoreText.text = $"현재 점수 {(int)GameManager.Instance.nowScore}점";
-        gameOverHighScoreText.text = $"당신의 최고 점수 {(int)GameManager.Instance.hightScore}점";
+        gameOverHighScoreText.text = $"당신의 최고 점수 {(int)GameManager.Instance.highScore}점";
     }
 
     public void OpenSettings()
