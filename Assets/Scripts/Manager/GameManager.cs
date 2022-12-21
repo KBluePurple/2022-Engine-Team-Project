@@ -33,7 +33,6 @@ namespace Manager
        public GameState nowGameState = GameState.Title;
 
         public EventHandler<PauseState> OnPauseStateChanged;
-
         public EventHandler<GameState> OnGameStateChanged;
         public EventHandler OnGameOver;
         public EventHandler OnRestart;
@@ -80,13 +79,13 @@ namespace Manager
         public void Pause()
         {
             _paused = true;
-            OnGameStateChanged.Invoke(this, GameState.Pause);
+            OnPauseStateChanged.Invoke(this, PauseState.Pause);
         }
 
         public void Resume()
         {
             _paused = false;
-            OnGameStateChanged.Invoke(this, GameState.Play);
+            OnPauseStateChanged.Invoke(this, PauseState.Play);
         }
 
         public void GameOver()
