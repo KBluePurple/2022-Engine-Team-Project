@@ -115,11 +115,5 @@ namespace Manager
             OnGameOver.Invoke(this, EventArgs.Empty);
             _isGameOver = true;
         }
-
-            //if (Input.GetKeyDown(KeyCode.Alpha5))
-            //{
-            //    OnScoreUpdate?.Invoke();
-            //}
-        }
     }
 }
