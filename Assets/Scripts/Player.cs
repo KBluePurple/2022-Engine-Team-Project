@@ -184,7 +184,7 @@ public class Player : MonoBehaviour, IHitAble
             if (bullet != null)
             {
                 bullet.DestoryAction();
-                GameManager.Instance.score += 0.1f;
+                GameManager.Instance.nowScore += 0.1f;
             }
         }
 

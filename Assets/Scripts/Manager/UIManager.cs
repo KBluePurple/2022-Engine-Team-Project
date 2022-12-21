@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using System.Collections;
-using TMPro;
+
 
 public class UIManager : MonoBehaviour
 {
@@ -21,7 +21,8 @@ public class UIManager : MonoBehaviour
     [Header("GameOver")] [SerializeField] private CanvasGroup gameOverMenu;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI infoText;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI gameOverNowScoreText;
+    [SerializeField] private TextMeshProUGUI gameOverHighScoreText; 
 
     [Header("Fade")] [SerializeField] private CanvasGroup fadeScreen;
 
@@ -29,10 +30,12 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("UIManager Awake");
         fadeScreen.DOFade(0, 1f).From(1f).SetUpdate(true);
+        GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
+        GameManager.Instance.OnScoreUpdate += ScoreUpdate;
     }
 
-    [SerializeField] private TMP_Text nowScoreText;
-    [SerializeField] private TMP_Text highScoreText;
+    [SerializeField] private TMP_Text inGameNowScoreText;
+    [SerializeField] private TMP_Text inGameHighScoreText;
 
     private void Start()
     {
@@ -43,8 +46,6 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
         GameManager.Instance.OnGameOver += HandleGameOver;
         GameManager.Instance.OnRestart += HandleRestart;
-        GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
-        GameManager.Instance.OnScoreUpdate += ScoreUpdate;
     }
 
     private void HandlePauseStateChanged(object sender, PauseState e)
@@ -90,15 +91,19 @@ public class UIManager : MonoBehaviour
 
     private void HandleGameOver(object sender, EventArgs e)
     {
+        GameOverScoreUpdate();
+
         gameOverMenu.gameObject.SetActive(true);
         DOTween.Sequence()
             .Append(gameOverMenu.DOFade(1, 2f))
             .Join(DOTween.To(() => gameOverText.characterSpacing, x => gameOverText.characterSpacing = x, 0, 2f)
                 .From(170)).SetEase(Ease.OutCubic)
             .Append(infoText.DOFade(1, 1f))
-            .Join(scoreText.DOFade(1, 1f))
+            .Join(gameOverNowScoreText.DOFade(1, 1f))
+            .Join(gameOverHighScoreText.DOFade(1, 1f))
             .SetUpdate(true)
             .Play();
+
     }
 
     private void OnPause()
@@ -136,9 +141,9 @@ public class UIManager : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.isGameEnd)
+            if (GameManager.Instance._isGameOver)
                 break;
-            GameManager.Instance.score++;
+            GameManager.Instance.nowScore++;
             ScoreUpdate();
             yield return new WaitForSeconds(1f);
         }
@@ -146,7 +151,14 @@ public class UIManager : MonoBehaviour
 
     private void ScoreUpdate()
     {
-        nowScoreText.text = $"현재 {(int)GameManager.Instance.score}점";
+        inGameNowScoreText.text = $"현재 {(int)GameManager.Instance.nowScore}점";
+        inGameHighScoreText.text = $"최고점수 {(int)GameManager.Instance.hightScore} 점";
+    }
+
+    private void GameOverScoreUpdate()
+    {
+        gameOverNowScoreText.text = $"현재 점수 {(int)GameManager.Instance.nowScore}점";
+        gameOverHighScoreText.text = $"당신의 최고 점수 {(int)GameManager.Instance.hightScore}점";
     }
 
     public void OpenSettings()

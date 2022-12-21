@@ -32,13 +32,11 @@ namespace Manager
 
         #region 스코어에 필요한 변수
 
-        public float score = 0;
+        public float nowScore = 0;
         public float hightScore = 0;
 
         private string hashNowScore = "NowScore";
         private string hashHighScore = "HightScore";
-
-        public bool isGameEnd = false;
 
         #endregion
 
@@ -49,13 +47,13 @@ namespace Manager
         public EventHandler OnGameOver;
         public EventHandler OnRestart;
 
-        private bool _isGameOver;
         public Action OnScoreUpdate;
+        public bool _isGameOver;
 
         private void Start()
         {
-            // json저장이나 할까
-            //hightScore = PlayerPrefs.GetInt(hashHighScore);
+            hightScore = PlayerPrefs.GetInt(hashHighScore);
+            OnScoreUpdate?.Invoke();
         }
 
         private void Update()
@@ -117,6 +115,9 @@ namespace Manager
         public void GameOver()
         {
             OnGameOver.Invoke(this, EventArgs.Empty);
+            if (nowScore > PlayerPrefs.GetInt(hashHighScore))
+                 PlayerPrefs.SetInt(hashHighScore, (int)nowScore);
+                
             _isGameOver = true;
         }
     }
