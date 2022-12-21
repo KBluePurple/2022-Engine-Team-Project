@@ -11,8 +11,6 @@ namespace Manager
         [SerializeField] private Transform bulletParent;
         [SerializeField] private Transform player;
 
-        private bool isRunning = false;
-
         public void SpawnBullet(Vector3 position, Quaternion rotation)
         {
             var positionOffset = position + player.position;
@@ -114,14 +112,7 @@ namespace Manager
 
         public void StartSpawn()
         {
-            isRunning = true;
             StartCoroutine(RepeatSpawn());
-        }
-
-        public void StopSpawn()
-        {
-            isRunning = false;
-            StopCoroutine(RepeatSpawn());
         }
         
         private IEnumerator RepeatSpawn()
