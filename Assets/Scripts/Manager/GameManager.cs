@@ -7,6 +7,12 @@ using UnityEngine.Serialization;
 
 public enum GameState
 {
+    Title,
+    InGame
+}
+
+public enum PauseState
+{
     Play,
     Pause,
 }
@@ -18,8 +24,15 @@ namespace Manager
         [SerializeField] private Player player;
 
         [NonSerialized] public float GameTime;
+        [SerializeField] private BulletManager bulletManager; 
+    
+        private float _time;
         private int _level;
         private bool _paused;
+
+       public GameState nowGameState = GameState.Title;
+
+        public EventHandler<PauseState> OnPauseStateChanged;
 
         public EventHandler<GameState> OnGameStateChanged;
         public EventHandler OnGameOver;
@@ -81,5 +94,6 @@ namespace Manager
             OnGameOver.Invoke(this, EventArgs.Empty);
             _isGameOver = true;
         }
+
     }
 }

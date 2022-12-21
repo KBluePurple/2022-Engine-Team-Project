@@ -16,6 +16,7 @@ public class Player : MonoBehaviour, IHitAble
     [SerializeField] private GameObject dashParticle;
     [SerializeField] private float bombRadius = 27.5f;
     [SerializeField] private LayerMask bulletLayer;
+    private Renderer playerRenderer;
 
 
     [SerializeField] private SkillBase[] skills = new SkillBase[4];
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour, IHitAble
 
     private void Awake()
     {
+        playerRenderer = GetComponent<Renderer>();
         _mainCamera = Camera.main;
         _hpBar = transform.Find("Health Bar Canvas").GetComponent<HpBar>();
         _nowHp = _maxHp;
@@ -227,7 +229,9 @@ public class Player : MonoBehaviour, IHitAble
     private IEnumerator StealthCoroutine()
     {
         _isInvincibility = true;
+        playerRenderer.material.color = Color.gray;
         yield return new WaitForSeconds(3f);
+        playerRenderer.material.color = Color.white;
         _isInvincibility = false;
     }
 
