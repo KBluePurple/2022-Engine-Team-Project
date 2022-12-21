@@ -60,8 +60,7 @@ namespace Manager
                 else
                     Resume();
             
-            if (Input.GetKeyDown(KeyCode.Return) && _isGameOver)
-                Restart();
+            if (Input.GetKeyDown(KeyCode.Return) && _isGameOver) Restart();
         }
 
         private void Restart()

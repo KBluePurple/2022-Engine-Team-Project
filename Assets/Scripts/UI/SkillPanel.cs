@@ -13,6 +13,8 @@ namespace UI
         [SerializeField] private Image coolTimeImage;
         [SerializeField] private TextMeshProUGUI lockTimeText;
         
+        [SerializeField] private Image activeTimeImage;
+
         private SkillBase _skill;
         private bool _isLock = true;
 
@@ -51,7 +53,24 @@ namespace UI
             lockTimeText.text = (_skill.unlockTime - GameManager.Instance.GameTime).ToString("F1");
             if (_isLock) return;
             coolTimeImage.color = _tempColor;
-            coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
+
+            if (_skill is StealthSkill stealthSkill)
+            {
+                if (0 < stealthSkill.ActiveTimeRemaining)
+                {
+                    activeTimeImage.gameObject.SetActive(true);
+                    activeTimeImage.fillAmount = stealthSkill.ActiveTimeRemaining / stealthSkill.activeTime;
+                }
+                else
+                {
+                    activeTimeImage.gameObject.SetActive(false);
+                    coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
+                }
+            }
+            else
+            {
+                coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
+            }
         }
     }
 }

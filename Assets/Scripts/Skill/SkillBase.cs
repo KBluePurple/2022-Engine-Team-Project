@@ -32,12 +32,16 @@ namespace Skill
             OnSkillUnlocked?.Invoke();
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            if (GameManager.Instance.GameTime < unlockTime) return;
-            if (IsUnlock) return;
-            
-            Unlock();
+            if (IsUnlock)
+            {
+                CoolTimeLeft -= Time.deltaTime;
+            }
+            else if (unlockTime >= GameManager.Instance.GameTime && !IsUnlock)
+            {
+                Unlock();
+            }
         }
     }
 }

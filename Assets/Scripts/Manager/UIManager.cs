@@ -13,8 +13,11 @@ public class UIManager : MonoBehaviour
     
     [Header("Pause")]
     [SerializeField] private CanvasGroup pauseMenu;
-    [SerializeField] private CanvasGroup startMenu; 
+    [SerializeField] private CanvasGroup startMenu;
     
+    [Header("Settings")]
+    [SerializeField] private CanvasGroup settingsMenu;
+
     [Header("GameOver")]
     [SerializeField] private CanvasGroup gameOverMenu;
     [SerializeField] private TextMeshProUGUI gameOverText;
@@ -100,7 +103,7 @@ public class UIManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         sequence.AppendCallback(() => pauseMenu.gameObject.SetActive(true));
         sequence.Append(pauseMenu.DOFade(1, 0.2f));
-        sequence.Join(pauseMenu.transform.DOScale(1, 0.2f).SetEase(Ease.OutBack));
+        sequence.Join(pauseMenu.transform.DOScale(1, 0.2f).From(0).SetEase(Ease.OutBack));
         sequence.SetUpdate(true);
         sequence.Play();
     }
@@ -114,7 +117,7 @@ public class UIManager : MonoBehaviour
     {
         var sequence = DOTween.Sequence()
             .Append(startMenu.DOFade(0, 1.5f))
-            .Join(startMenu.transform.DOScale(0, 1.5f).SetEase(Ease.InBack))
+            .Join(startMenu.transform.DOScale(0, 1.5f).From(1))
             .AppendCallback(() => startMenu.gameObject.SetActive(false))
             .SetUpdate(true)
             .Play();
@@ -123,5 +126,25 @@ public class UIManager : MonoBehaviour
             .Append(DOTween.To(() => cmTrans.m_FollowOffset.y, x => cmTrans.m_FollowOffset.y = x, 8, 2f))
             .SetUpdate(true)
             .Play();
+    }
+    
+    public void OpenSettings()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.AppendCallback(() => settingsMenu.gameObject.SetActive(true));
+        sequence.Append(settingsMenu.DOFade(1, 0.2f));
+        sequence.Join(settingsMenu.transform.DOScale(1, 0.2f).From(0).SetEase(Ease.OutBack));
+        sequence.SetUpdate(true);
+        sequence.Play();
+    }
+    
+    public void CloseSettings()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(settingsMenu.DOFade(0, 0.2f));
+        sequence.Join(settingsMenu.transform.DOScale(0, 0.2f).From(1));
+        sequence.AppendCallback(() => settingsMenu.gameObject.SetActive(false));
+        sequence.SetUpdate(true);
+        sequence.Play();
     }
 }

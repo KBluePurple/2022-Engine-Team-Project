@@ -68,8 +68,6 @@ public class Player : MonoBehaviour, IHitAble
         {
             selectPanel.skillPanels[i].SetSkill(skills[i]);
         }
-
-        StartCoroutine(CoolTime());
     }
 
     private IEnumerator InvincibilityCheck()
@@ -77,25 +75,6 @@ public class Player : MonoBehaviour, IHitAble
         _isInvincibility = true;
         yield return new WaitForSeconds(_invincibilityTime);
         _isInvincibility = false;
-    }
-
-    private IEnumerator CoolTime()
-    {
-        while (true)
-        {
-            foreach (var skill in skills)
-            {
-                if (!skill.IsUnlock) continue;
-
-                skill.CoolTimeLeft -= Time.deltaTime;
-                if (skill.CoolTimeLeft <= 0)
-                {
-                    skill.CoolTimeLeft = 0;
-                }
-            }
-
-            yield return null;
-        }
     }
 
     private readonly List<Renderer> _renderers = new();
@@ -220,18 +199,19 @@ public class Player : MonoBehaviour, IHitAble
         healFeedbacks?.PlayFeedbacks();
     }
 
-    public void Stealth()
+    public void Stealth(float activeTime)
     {
-        StartCoroutine(StealthCoroutine());
+        StartCoroutine(StealthCoroutine(activeTime));
         stealthFeedbacks?.PlayFeedbacks();
     }
 
-    private IEnumerator StealthCoroutine()
+    private IEnumerator StealthCoroutine(float activeTime)
     {
         _isInvincibility = true;
-        playerRenderer.material.color = Color.gray;
-        yield return new WaitForSeconds(3f);
-        playerRenderer.material.color = Color.white;
+        var material = playerRenderer.material;
+        material.color = Color.gray;
+        yield return new WaitForSeconds(activeTime);
+        material.color = Color.white;
         _isInvincibility = false;
     }
 
