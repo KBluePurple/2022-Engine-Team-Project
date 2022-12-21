@@ -58,14 +58,6 @@ namespace Manager
                 bulletManager.StartSpawn();
                 OnGameStateChanged.Invoke(this, GameState.InGame);
             }
-
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                // 디버그용
-                bulletManager.StopSpawn();
-                nowGameState = GameState.Title;
-                OnGameStateChanged.Invoke(this, GameState.Title);
-            }
         }
 
     }

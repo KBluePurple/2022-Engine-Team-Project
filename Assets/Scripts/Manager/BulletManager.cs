@@ -120,7 +120,6 @@ namespace Manager
             yield return new WaitForSeconds(3f);
             while (true)
             {
-                if (isRunning == false) break;
 
                 int pattern = Random.Range(1, 5);
 

@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
         switch (e)
         {
             case GameState.Title:
-                OnTitle();
+
                 break;
             case GameState.InGame:
                 OnStart();
@@ -70,21 +70,6 @@ public class UIManager : MonoBehaviour
         sequence.Join(pauseMenu.transform.DOScale(1, 0.2f).SetEase(Ease.OutBack));
         sequence.SetUpdate(true);
         sequence.Play();
-    }
-
-    private void OnTitle() // 타이틀 화면으로 왔을 때
-    {
-        var sequence = DOTween.Sequence()
-            .AppendCallback(() => startMenu.gameObject.SetActive(true))
-            .Append(startMenu.DOFade(1, 1.5f))
-            .Join(startMenu.transform.DOScale(1, 1.5f).SetEase(Ease.OutBack))
-            .SetUpdate(true)
-            .Play();
-
-        var camMoveSeq = DOTween.Sequence()
-            .SetUpdate(true)
-            .Append(DOTween.To(() => cmTrans.m_FollowOffset.y, x => cmTrans.m_FollowOffset.y = x, 2, 2f))
-            .Play();
     }
 
     private void OnStart() // 게임 시작할 때
