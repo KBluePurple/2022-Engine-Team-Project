@@ -30,7 +30,17 @@ namespace Manager
         private int _level;
         private bool _paused;
 
-       public GameState nowGameState = GameState.Title;
+        #region 스코어에 필요한 변수
+        public float score = 0;
+        public float hightScore = 0;
+
+        private string hashNowScore = "NowScore";
+        private string hashHighScore = "HightScore";
+
+        public bool isGameEnd = false;
+        #endregion
+
+        public GameState nowGameState = GameState.Title;
 
         public EventHandler<PauseState> OnPauseStateChanged;
         public EventHandler<GameState> OnGameStateChanged;
@@ -38,6 +48,13 @@ namespace Manager
         public EventHandler OnRestart;
         
         private bool _isGameOver;
+        public Action OnScoreUpdate;
+
+        private void Start()
+        {
+            // json저장이나 할까
+            //hightScore = PlayerPrefs.GetInt(hashHighScore);
+        }
 
         private void Update()
         {
@@ -59,8 +76,15 @@ namespace Manager
                     Pause();
                 else
                     Resume();
-            
-            if (Input.GetKeyDown(KeyCode.Return) && _isGameOver) Restart();
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if (_isGameOver) Restart();
+                if (nowGameState != GameState.Title) return;
+                nowGameState = GameState.InGame;
+                bulletManager.StartSpawn();
+                OnGameStateChanged.Invoke(this, GameState.InGame);
+            }
         }
 
         private void Restart()
@@ -86,12 +110,16 @@ namespace Manager
             _paused = false;
             OnPauseStateChanged.Invoke(this, PauseState.Play);
         }
-
         public void GameOver()
         {
             OnGameOver.Invoke(this, EventArgs.Empty);
             _isGameOver = true;
         }
 
+            //if (Input.GetKeyDown(KeyCode.Alpha5))
+            //{
+            //    OnScoreUpdate?.Invoke();
+            //}
+        }
     }
 }

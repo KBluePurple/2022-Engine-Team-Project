@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using System.Collections;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -33,6 +35,9 @@ public class UIManager : MonoBehaviour
         fadeScreen.DOFade(0, 1f).From(1f).SetUpdate(true);
     }
 
+    [SerializeField] private TMP_Text nowScoreText;
+    [SerializeField] private TMP_Text highScoreText;
+
     private void Start()
     {
         cmTrans = cmVcam.GetCinemachineComponent<CinemachineTransposer>();
@@ -42,6 +47,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
         GameManager.Instance.OnGameOver += HandleGameOver;
         GameManager.Instance.OnRestart += HandleRestart;
+        GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
+        GameManager.Instance.OnScoreUpdate += ScoreUpdate;
     }
 
     private void HandlePauseStateChanged(object sender, PauseState e)
@@ -125,7 +132,28 @@ public class UIManager : MonoBehaviour
         var camMoveSeq = DOTween.Sequence()
             .Append(DOTween.To(() => cmTrans.m_FollowOffset.y, x => cmTrans.m_FollowOffset.y = x, 8, 2f))
             .SetUpdate(true)
-            .Play();
+            .Play()
+            .OnComplete(() =>
+            {
+                StartCoroutine(ScoreCheck());
+            });
+    }
+
+    IEnumerator ScoreCheck()
+    {
+        while (true)
+        {
+            if (GameManager.Instance.isGameEnd)
+                break;
+            GameManager.Instance.score++;
+            ScoreUpdate();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void ScoreUpdate()
+    {
+        nowScoreText.text = $"ÇöÀç {(int)GameManager.Instance.score}Á¡";
     }
     
     public void OpenSettings()
