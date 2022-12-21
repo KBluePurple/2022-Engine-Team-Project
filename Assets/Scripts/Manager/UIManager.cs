@@ -5,14 +5,18 @@ using Manager;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using System.Collections;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cmVcam;
     private CinemachineTransposer cmTrans;
     [SerializeField] private CanvasGroup pauseMenu;
-    [SerializeField] private CanvasGroup startMenu; 
-    
+    [SerializeField] private CanvasGroup startMenu;
+    [SerializeField] private TMP_Text nowScoreText;
+    [SerializeField] private TMP_Text highScoreText;
+
     private void Start()
     {
         cmTrans = cmVcam.GetCinemachineComponent<CinemachineTransposer>();
@@ -20,6 +24,8 @@ public class UIManager : MonoBehaviour
         pauseMenu.alpha = 0;
         GameManager.Instance.OnPauseStateChanged += HandlePauseStateChanged;
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+        GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
+        GameManager.Instance.OnScoreUpdate += ScoreUpdate;
     }
 
     private void HandlePauseStateChanged(object sender, PauseState e)
@@ -84,6 +90,27 @@ public class UIManager : MonoBehaviour
         var camMoveSeq = DOTween.Sequence()
             .Append(DOTween.To(() => cmTrans.m_FollowOffset.y, x => cmTrans.m_FollowOffset.y = x, 8, 2f))
             .SetUpdate(true)
-            .Play();
+            .Play()
+            .OnComplete(() =>
+            {
+                StartCoroutine(ScoreCheck());
+            });
+    }
+
+    IEnumerator ScoreCheck()
+    {
+        while (true)
+        {
+            if (GameManager.Instance.isGameEnd)
+                break;
+            GameManager.Instance.score++;
+            ScoreUpdate();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void ScoreUpdate()
+    {
+        nowScoreText.text = $"ÇöÀç {(int)GameManager.Instance.score}Á¡";
     }
 }

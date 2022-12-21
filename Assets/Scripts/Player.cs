@@ -5,6 +5,7 @@ using UI;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using KBluePurple.Util;
+using Manager;
 
 public class Player : MonoBehaviour, IHitAble
 {
@@ -154,8 +155,10 @@ public class Player : MonoBehaviour, IHitAble
             if (bullet != null)
             {
                 bullet.DestoryAction();
+                GameManager.Instance.score += 0.1f;
             }
         }
+        GameManager.Instance.OnScoreUpdate.Invoke();
         bombFeedbacks?.PlayFeedbacks();
     }
 

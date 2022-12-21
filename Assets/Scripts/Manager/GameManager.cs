@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using AchromaticDev.Util;
 using UnityEngine;
 
@@ -25,10 +26,27 @@ namespace Manager
         private int _level;
         private bool _paused;
 
-       public GameState nowGameState = GameState.Title;
+        #region 스코어에 필요한 변수
+        public float score = 0;
+        public float hightScore = 0;
+
+        private string hashNowScore = "NowScore";
+        private string hashHighScore = "HightScore";
+
+        public bool isGameEnd = false;
+        #endregion
+
+        public GameState nowGameState = GameState.Title;
 
         public EventHandler<PauseState> OnPauseStateChanged;
         public EventHandler<GameState> OnGameStateChanged;
+        public Action OnScoreUpdate;
+
+        private void Start()
+        {
+            // json저장이나 할까
+            //hightScore = PlayerPrefs.GetInt(hashHighScore);
+        }
 
         private void Update()
         {
@@ -58,7 +76,11 @@ namespace Manager
                 bulletManager.StartSpawn();
                 OnGameStateChanged.Invoke(this, GameState.InGame);
             }
-        }
 
+            //if (Input.GetKeyDown(KeyCode.Alpha5))
+            //{
+            //    OnScoreUpdate?.Invoke();
+            //}
+        }
     }
 }
