@@ -9,7 +9,9 @@ namespace Manager
     {
         private void Start()
         {
+            Time.timeScale = 1;
             GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
+            GameManager.Instance.OnGameOver += OnGameOver;
         }
 
         private static void OnGamePaused()
@@ -35,6 +37,11 @@ namespace Manager
                 default:
                     throw new ArgumentOutOfRangeException(nameof(e), e, null);
             }
+        }
+        
+        private void OnGameOver(object sender, EventArgs e)
+        {
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, 1f).SetUpdate(true);
         }
     }
 }

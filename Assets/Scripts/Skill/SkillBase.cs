@@ -11,7 +11,7 @@ namespace Skill
         
         public Sprite skillImage;
         public float coolTime;
-        public float openTime = 30f;
+        public float unlockTime = 30f;
         [NonSerialized] public float CoolTimeLeft;
         [NonSerialized] public bool IsUnlock;
 
@@ -34,7 +34,7 @@ namespace Skill
 
         public void Update()
         {
-            if (GameManager.Instance.PlayTime < openTime) return;
+            if (GameManager.Instance.GameTime < unlockTime) return;
             if (IsUnlock) return;
             
             Unlock();

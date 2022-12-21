@@ -1,5 +1,7 @@
 ﻿using DG.Tweening;
+using Manager;
 using Skill;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +10,8 @@ namespace UI
     public class SkillPanel : MonoBehaviour
     {
         [SerializeField] private Image skillImage;
-        [SerializeField] private Image lockImage;
         [SerializeField] private Image coolTimeImage;
+        [SerializeField] private TextMeshProUGUI lockTimeText;
         
         private SkillBase _skill;
         private bool _isLock = true;
@@ -26,17 +28,17 @@ namespace UI
         {
             _skill = skill;
             skillImage.sprite = skill.skillImage;
-            lockImage.gameObject.SetActive(!skill.IsUnlock);
+            lockTimeText.gameObject.SetActive(!skill.IsUnlock);
             
             _skill.OnSkillUnlocked += OnSkillUnlocked;
         }
 
         private void OnSkillUnlocked()
         {
-            (lockImage.transform as RectTransform).DOAnchorPosY(-200, 1f)
+            (lockTimeText.transform as RectTransform).DOAnchorPosY(-200, 1f)
                 .SetEase(Ease.InOutBack);
-            lockImage.DOFade(0, 0.5f)
-                .OnComplete(() => lockImage.gameObject.SetActive(false));
+            lockTimeText.DOFade(0, 0.5f)
+                .OnComplete(() => lockTimeText.gameObject.SetActive(false));
             coolTimeImage.DOFade(0, 0.5f)
                 .OnComplete(() =>
                 {
@@ -46,6 +48,7 @@ namespace UI
 
         private void Update()
         {
+            lockTimeText.text = (_skill.unlockTime - GameManager.Instance.GameTime).ToString("F1");
             if (_isLock) return;
             coolTimeImage.color = _tempColor;
             coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;

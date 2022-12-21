@@ -80,12 +80,6 @@ namespace KBluePurple.Util
 
         private void SceneUnloaded(Scene scene)
         {
-            foreach (var poolObject in _pool)
-            {
-                PoolManager.Instance.PoolObjectCache.Remove(poolObject.gameObject);
-                Destroy(poolObject.gameObject);
-            }
-
             _pool.Clear();
         }
     }

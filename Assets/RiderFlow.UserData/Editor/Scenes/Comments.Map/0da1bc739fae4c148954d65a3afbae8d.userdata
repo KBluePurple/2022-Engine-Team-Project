@@ -1,0 +1,8 @@
+{
+  "GlobalObjectId_V1-2-0da1bc739fae4c148954d65a3afbae8d-1401255484-0": {
+    "GameObjectId": "GlobalObjectId_V1-2-0da1bc739fae4c148954d65a3afbae8d-1401255484-0",
+    "CommentText": "타이틀에서는 2의 Y & 시작하면 8로 변경\n\n죽을 시에는 씬 다시 로드로 초기화",
+    "AssetGUID": "0da1bc739fae4c148954d65a3afbae8d",
+    "UniqueItemID": "GlobalObjectId_V1-2-0da1bc739fae4c148954d65a3afbae8d-1401255484-0"
+  }
+}

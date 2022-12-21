@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,20 +11,12 @@ namespace AchromaticDev.Util
         public static bool IsInitialized => _instance != null;
         protected static T _instance;
         private static readonly object Lock = new();
-        private static bool _applicationIsQuitting;
         private static bool _isDontDestroyOnLoad;
 
         public static T Instance
         {
             get
             {
-                if (_applicationIsQuitting)
-                {
-                    Debug.LogWarning(
-                        $"[MonoSingleton] Instance '{typeof(T)}' already destroyed on application quit. Won't create again - returning null.");
-                    return null;
-                }
-
                 lock (Lock)
                 {
                     if (!ReferenceEquals(_instance, null)) return _instance;
@@ -82,9 +75,9 @@ namespace AchromaticDev.Util
             }
         }
 
-        public virtual void OnDestroy()
+        private void OnDestroy()
         {
-            _applicationIsQuitting = true;
+            if (!_isDontDestroyOnLoad) _instance = null;
         }
 
         private static void OnSceneUnloaded(Scene scene)

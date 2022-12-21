@@ -11,11 +11,14 @@ namespace Manager
         [SerializeField] private Volume volume;
 
         private ColorAdjustments _colorAdjustments;
+        private DepthOfField _depthOfField;
 
         private void Start()
         {
             GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+            GameManager.Instance.OnGameOver += HandleGameOver;
             volume.profile.TryGet(out _colorAdjustments);
+            volume.profile.TryGet(out _depthOfField);
         }
 
         private void HandleGameStateChanged(object sender, GameState e)
@@ -33,6 +36,14 @@ namespace Manager
                 default:
                     throw new ArgumentOutOfRangeException(nameof(e), e, null);
             }
+        }
+        
+        private void HandleGameOver(object sender, EventArgs e)
+        {
+            DOTween.To(() => _colorAdjustments.saturation.value, x => _colorAdjustments.saturation.value = x,
+                -100, 5f).SetUpdate(true);
+            DOTween.To(() => _depthOfField.gaussianStart.value, x => _depthOfField.gaussianStart.value = x,
+                0, 5f).SetUpdate(true);
         }
     }
 }

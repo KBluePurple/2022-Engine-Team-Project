@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using AchromaticDev.Util;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public enum GameState
@@ -15,23 +17,51 @@ namespace Manager
     {
         [SerializeField] private Player player;
 
-        [NonSerialized] public float PlayTime;
+        [NonSerialized] public float GameTime;
         private int _level;
         private bool _paused;
 
         public EventHandler<GameState> OnGameStateChanged;
+        public EventHandler OnGameOver;
+        public EventHandler OnRestart;
+        
+        private bool _isGameOver;
 
         private void Update()
         {
-            PlayTime += Time.deltaTime;
-            if (PlayTime >= 60 * _level)
-                player.Skills[_level++].Unlock();
+            GameTime += Time.deltaTime;
+            if (GameTime >= 60 * _level)
+            {
+                try
+                {
+                    player.Skills[_level++].Unlock();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
 
             if (Input.GetKeyDown(KeyCode.Escape))
                 if (_paused == false)
                     Pause();
                 else
                     Resume();
+            
+            if (Input.GetKeyDown(KeyCode.Return) && _isGameOver)
+                Restart();
+        }
+
+        private void Restart()
+        {
+            StartCoroutine(Coroutine());
+            IEnumerator Coroutine()
+            {
+                OnRestart?.Invoke(this, EventArgs.Empty);
+                yield return new WaitForSecondsRealtime(1f);
+                Debug.Log("Restart");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
 
         public void Pause()
@@ -44,6 +74,12 @@ namespace Manager
         {
             _paused = false;
             OnGameStateChanged.Invoke(this, GameState.Play);
+        }
+
+        public void GameOver()
+        {
+            OnGameOver.Invoke(this, EventArgs.Empty);
+            _isGameOver = true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DG.Tweening;
 using Skill;
@@ -6,6 +7,7 @@ using UI;
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using KBluePurple.Util;
+using Manager;
 
 public class Player : MonoBehaviour, IHitAble
 {
@@ -94,6 +96,11 @@ public class Player : MonoBehaviour, IHitAble
         }
     }
 
+    private readonly List<Renderer> _renderers = new();
+    private static readonly int Surface = Shader.PropertyToID("_Surface");
+    private static readonly int Color1 = Shader.PropertyToID("_BaseColor");
+    private static readonly int ZWrite = Shader.PropertyToID("_ZWrite");
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.J))
@@ -117,6 +124,40 @@ public class Player : MonoBehaviour, IHitAble
         {
             skill.Update();
         }
+
+        var transform1 = _mainCamera.transform;
+        var position = transform1.position;
+        var position1 = transform.position;
+        
+        var rayHits = Physics.OverlapCapsule(position, position1, 1, LayerMask.GetMask("Tree"));
+        var rendererList = new List<Renderer>();
+        foreach (var rayHit in rayHits)
+        {
+            if (rayHit.GetComponent<Collider>().TryGetComponent(out Renderer renderer))
+            {
+                rendererList.Add(renderer);
+            }
+        }
+
+        foreach (var renderer in _renderers)
+        {
+            if (rendererList.Contains(renderer) && renderer.material.GetFloat(Surface) <= 0)
+            {
+                renderer.material.SetFloat(Surface, 1);
+                renderer.material.SetFloat(ZWrite, 0);
+                
+                renderer.material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            }
+            else if (!rendererList.Contains(renderer) && renderer.material.GetFloat(Surface) >= 1)
+            {
+                renderer.material.SetFloat(Surface, 0);
+                renderer.material.SetFloat(ZWrite, 1);
+                renderer.material.DisableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            }
+        }
+
+        _renderers.Clear();
+        _renderers.AddRange(rendererList);
 
         // unlock keys for debug
 #if UNITY_EDITOR
@@ -198,11 +239,23 @@ public class Player : MonoBehaviour, IHitAble
 
         _nowHp -= damage - _defence;
         _nowHp = Mathf.Clamp(_nowHp, 0, _maxHp);
+        
+        if (_nowHp <= 0)
+        {
+            _nowHp = 0;
+            Die();
+        }
 
         _hpBar.ChangeHp((float)_nowHp / _maxHp);
 
         hitFeedbacks?.PlayFeedbacks();
 
         return true;
+    }
+
+    private void Die()
+    {
+        GameManager.Instance.GameOver();
+        GetComponent<MeshRenderer>().material.DOFade(0, 1f).SetUpdate(true);
     }
 }
