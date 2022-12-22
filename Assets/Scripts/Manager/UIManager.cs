@@ -164,7 +164,16 @@ public class UIManager : MonoBehaviour
     private void ScoreUpdate()
     {
         inGameNowScoreText.text = $"현재 {(int)GameManager.Instance.nowScore}점";
-        inGameHighScoreText.text = $"최고점수 {(int)GameManager.Instance.highScore} 점";
+        HighScoreRealTimeUpdate();
+    }
+
+    private void HighScoreRealTimeUpdate()
+    {
+        GameManager.Instance.SetHighScore();
+
+        //if (GameManager.Instance.highScore <= GameManager.Instance.nowScore
+        //    || GameManager.Instance.highScore > 0)
+            inGameHighScoreText.text = $"최고점수 {(int)GameManager.Instance.highScore} 점";
     }
 
     private void GameOverScoreUpdate()

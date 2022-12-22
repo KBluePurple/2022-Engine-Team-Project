@@ -34,7 +34,6 @@ namespace Manager
         public float nowScore = 0;
         public float highScore = 0;
 
-        private string hashNowScore = "NowScore";
         private string hashHighScore = "HighScore";
 
         #endregion
@@ -51,7 +50,8 @@ namespace Manager
 
         private void Start()
         {
-            highScore = PlayerPrefs.GetInt(hashHighScore);
+            Cursor.visible = false;
+            SetHighScore();
             OnScoreUpdate?.Invoke();
         }
 
@@ -115,6 +115,20 @@ namespace Manager
         public void Exit()
         {
             Application.Quit();
+        }
+
+        public void SetHighScore()
+        {
+            highScore = PlayerPrefs.GetInt(hashHighScore);
+
+            if (highScore < nowScore)
+                 highScore = nowScore;
+        }
+
+        [ContextMenu("µð¹ö±ë")]
+        public void SetZero()
+        {
+            PlayerPrefs.SetInt(hashHighScore, 0);
         }
     }
 }

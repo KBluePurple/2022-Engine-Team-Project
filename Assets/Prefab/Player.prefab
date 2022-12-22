@@ -73590,6 +73590,7 @@ MonoBehaviour:
   bulletLayer:
     serializedVersion: 2
     m_Bits: 512
+  hitClip: {fileID: 8300000, guid: a6a33993becd3384f9478c4fb443e43e, type: 3}
   skills:
   - {fileID: 11400000, guid: bdacbec98a15cf14abb612ec014fee6a, type: 2}
   - {fileID: 11400000, guid: b13ef6dc72f3be54c8d7003f6e2f0e73, type: 2}
