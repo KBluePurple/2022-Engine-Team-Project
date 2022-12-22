@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Cinemachine;
 using System.Collections;
 using MoreMountains.Feedbacks;
-
+using Script.Manager;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cmVcam;
@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Pause")] [SerializeField] private CanvasGroup pauseMenu;
     [SerializeField] private CanvasGroup startMenu;
+    [SerializeField] private AudioClip pauseOnClip;
+    [SerializeField] private AudioClip pauseOffClip;
+    [SerializeField] private AudioClip buttonClickClip;
 
     [Header("Settings")] [SerializeField] private CanvasGroup settingsMenu;
 
@@ -86,6 +89,7 @@ public class UIManager : MonoBehaviour
         sequence.AppendCallback(() => pauseMenu.gameObject.SetActive(false));
         sequence.SetUpdate(true);
         sequence.Play();
+        SoundManager.Instance.PlayEffect(pauseOffClip);
     }
 
 
@@ -114,6 +118,7 @@ public class UIManager : MonoBehaviour
         sequence.Join(pauseMenu.transform.DOScale(1, 0.2f).From(0).SetEase(Ease.OutBack));
         sequence.SetUpdate(true);
         sequence.Play();
+        SoundManager.Instance.PlayEffect(pauseOnClip);
     }
 
     private void HandleRestart(object sender, EventArgs e)
@@ -169,6 +174,7 @@ public class UIManager : MonoBehaviour
         sequence.Join(settingsMenu.transform.DOScale(1, 0.2f).From(0).SetEase(Ease.OutBack));
         sequence.SetUpdate(true);
         sequence.Play();
+        SoundManager.Instance.PlayEffect(buttonClickClip);
     }
 
     public void CloseSettings()
@@ -179,5 +185,6 @@ public class UIManager : MonoBehaviour
         sequence.AppendCallback(() => settingsMenu.gameObject.SetActive(false));
         sequence.SetUpdate(true);
         sequence.Play();
+        SoundManager.Instance.PlayEffect(buttonClickClip);
     }
 }
