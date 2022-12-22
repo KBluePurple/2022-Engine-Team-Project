@@ -47,7 +47,7 @@ namespace UI
 
         private void Update()
         {
-            lockTimeText.text = (_skill.unlockTime - GameManager.Instance.GameTime).ToString("F1");
+            lockTimeText.text = Mathf.Max(0, _skill.unlockTime - GameManager.Instance.GameTime).ToString("F1");
             if (_isLock) return;
             coolTimeImage.color = _tempColor;
 
@@ -68,6 +68,11 @@ namespace UI
             {
                 coolTimeImage.fillAmount = _skill.CoolTimeLeft / _skill.coolTime;
             }
+        }
+        
+        private void OnDestroy()
+        {
+            _skill.OnSkillUnlocked -= OnSkillUnlocked;
         }
     }
 }

@@ -22,13 +22,5 @@ namespace Script.Manager
 
             PoolManager.Destroy(sound, clip.length);
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                PlayEffect(buttonClick, Vector3.zero);
-            }
-        }
     }
 }

@@ -64,6 +64,8 @@ namespace KBluePurple.Util
 
         public void ReturnObject(GameObject obj)
         {
+            if (obj == null)
+                return;
             obj.SetActive(false);
             if (PoolManager.Instance.PoolObjectCache.TryGetValue(obj, out var poolObject))
             {
