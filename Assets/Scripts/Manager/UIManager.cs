@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera cmVcam;
     private CinemachineTransposer cmTrans;
 
+    [SerializeField] private AudioClip gameStartClip;
+
     [Header("Pause")] [SerializeField] private CanvasGroup pauseMenu;
     [SerializeField] private CanvasGroup startMenu;
     [SerializeField] private AudioClip pauseOnClip;
@@ -140,6 +142,8 @@ public class UIManager : MonoBehaviour
             .SetUpdate(true)
             .Play()
             .OnComplete(() => { StartCoroutine(ScoreCheck()); });
+
+        SoundManager.Instance.PlayEffect(gameStartClip);
     }
 
     IEnumerator ScoreCheck()
