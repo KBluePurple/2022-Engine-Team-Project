@@ -16,8 +16,8 @@ public class Player : MonoBehaviour, IHitAble
     [SerializeField] private GameObject dashParticle;
     [SerializeField] private float bombRadius = 27.5f;
     [SerializeField] private LayerMask bulletLayer;
+    [SerializeField] private AudioClip hitClip;
     private Renderer playerRenderer;
-
 
     [SerializeField] private SkillBase[] skills = new SkillBase[4];
     public ReadOnlyCollection<SkillBase> Skills => new(skills);
@@ -223,6 +223,7 @@ public class Player : MonoBehaviour, IHitAble
     public bool Hit(int damage)
     {
         if (_isInvincibility) return false;
+        if (_nowHp == 0) return false;
 
         StartCoroutine(InvincibilityCheck());
 
@@ -238,6 +239,7 @@ public class Player : MonoBehaviour, IHitAble
         _hpBar.ChangeHp((float)_nowHp / _maxHp);
 
         hitFeedbacks?.PlayFeedbacks();
+        Script.Manager.SoundManager.Instance.PlayEffect(hitClip);
 
         return true;
     }

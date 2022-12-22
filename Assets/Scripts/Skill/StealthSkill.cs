@@ -32,6 +32,7 @@ namespace Skill
         {
             ActiveTimeRemaining = activeTime;
             player.Stealth(ActiveTimeRemaining);
+            if (skillClip != null) Script.Manager.SoundManager.Instance.PlayEffect(skillClip);
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Skill
         public Sprite skillImage;
         public float coolTime;
         public float unlockTime = 30f;
+
+        public AudioClip skillClip;
+
         [NonSerialized] public float CoolTimeLeft;
         [NonSerialized] public bool IsUnlock;
 

@@ -8,6 +8,7 @@ namespace Skill
         protected override void OnUseSkill(Player player)
         {
             player.Bomb();
+            if (skillClip != null) Script.Manager.SoundManager.Instance.PlayEffect(skillClip);
         }
     }
 }

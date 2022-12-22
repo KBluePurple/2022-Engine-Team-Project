@@ -15,3 +15,4 @@ MonoBehaviour:
   skillImage: {fileID: 21300000, guid: 3b6255e947700584a89cf0b6475d47ed, type: 3}
   coolTime: 30
   unlockTime: 30
+  skillClip: {fileID: 8300000, guid: 6a1d295d9827bc7489c0dc40fcf24fe6, type: 3}

@@ -15,4 +15,5 @@ MonoBehaviour:
   skillImage: {fileID: 21300000, guid: 13191ee16e3bd50499a60c27027956a1, type: 3}
   coolTime: 30
   unlockTime: 90
+  skillClip: {fileID: 8300000, guid: 175bb4a19768778428ff73236afa2a62, type: 3}
   activeTime: 5
