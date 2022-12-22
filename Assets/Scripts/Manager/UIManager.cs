@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using System.Collections;
-
+using MoreMountains.Feedbacks;
 
 public class UIManager : MonoBehaviour
 {
@@ -22,14 +22,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TextMeshProUGUI gameOverNowScoreText;
-    [SerializeField] private TextMeshProUGUI gameOverHighScoreText; 
+    [SerializeField] private TextMeshProUGUI gameOverHighScoreText;
 
-    [Header("Fade")] [SerializeField] private CanvasGroup fadeScreen;
+    [Header("Restart")]
+    [SerializeField] private MMFeedbacks restartFeedback;
 
     private void Awake()
     {
         Debug.Log("UIManager Awake");
-        fadeScreen.DOFade(0, 1f).From(1f).SetUpdate(true);
         GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
         GameManager.Instance.OnScoreUpdate += ScoreUpdate;
     }
@@ -118,7 +118,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleRestart(object sender, EventArgs e)
     {
-        fadeScreen.DOFade(1, 1f).From(0).SetUpdate(true);
+        restartFeedback?.PlayFeedbacks();
     }
 
     private void OnStart() // 게임 시작할 때

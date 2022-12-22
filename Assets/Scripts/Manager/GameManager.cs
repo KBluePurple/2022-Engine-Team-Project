@@ -85,7 +85,7 @@ namespace Manager
             IEnumerator Coroutine()
             {
                 OnRestart?.Invoke(this, EventArgs.Empty);
-                yield return new WaitForSecondsRealtime(1f);
+                yield return new WaitForSecondsRealtime(3f);
                 SceneManager.LoadScene("Middle");
                 Debug.Log("Restart");
             }
