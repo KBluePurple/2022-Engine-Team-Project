@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Stealth
   m_EditorClassIdentifier: 
   skillImage: {fileID: 21300000, guid: 13191ee16e3bd50499a60c27027956a1, type: 3}
-  coolTime: 10
-  unlockTime: 30
+  coolTime: 30
+  unlockTime: 90
   activeTime: 5

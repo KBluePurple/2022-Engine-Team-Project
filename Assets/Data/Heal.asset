@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Heal
   m_EditorClassIdentifier: 
   skillImage: {fileID: 21300000, guid: 1275c87d27f24b4488208a90a97be6ab, type: 3}
-  coolTime: 5
+  coolTime: 30
+  unlockTime: 60
