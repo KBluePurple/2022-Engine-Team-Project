@@ -26,9 +26,12 @@ public class UIManager : MonoBehaviour
 
     [Header("Restart")]
     [SerializeField] private MMFeedbacks restartFeedback;
+    
+    [Header("Fade")] [SerializeField] private Image fadeScreen;
 
     private void Awake()
     {
+        fadeScreen.DOFade(0, 1f).From(1f).SetUpdate(true);
         Debug.Log("UIManager Awake");
         GameManager.Instance.OnScoreUpdate -= ScoreUpdate;
         GameManager.Instance.OnScoreUpdate += ScoreUpdate;
